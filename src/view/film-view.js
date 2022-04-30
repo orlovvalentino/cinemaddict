@@ -1,9 +1,9 @@
 import {createElement} from '../render.js';
 
-const createFilmTemplate = () => (`
+const createFilmTemplate = (film) => (`
     <article class="film-card">
       <a class="film-card__link">
-        <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
+        <h3 class="film-card__title">${film.filmInfo.title}</h3>
         <p class="film-card__rating">6.3</p>
         <p class="film-card__info">
           <span class="film-card__year">1936</span>
@@ -23,8 +23,12 @@ const createFilmTemplate = () => (`
 `);
 
 export default class FilmView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmTemplate();
+    return createFilmTemplate(this.film);
   }
 
   getElement() {

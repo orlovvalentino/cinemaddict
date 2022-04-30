@@ -1,4 +1,4 @@
-import {getRandomInteger} from '../utils.js';
+import {getRandomInteger} from '../src/utils.js';
 
 const generateDescription = () => {
   const descriptions = [
@@ -16,6 +16,9 @@ const generateFilmsTitle = () => {
     'Popeye the Sailor Meets Sindbad the Sailor',
     'Sagebrush Trail',
     'The Dance of Life',
+    'The Man with the Golden Arm',
+    'Santa Claus Conquers the Martians',
+    'Popeye the Sailor Meets Sindbad the Sailor'
   ];
 
   const randomIndex = getRandomInteger(0, filmsTitle.length - 1);
