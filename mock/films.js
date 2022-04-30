@@ -25,6 +25,18 @@ const generateFilmsTitle = () => {
 
   return filmsTitle[randomIndex];
 };
+const generetePosters = () => {
+  const posters = [
+    './images/posters/popeye-meets-sinbad.png',
+    './images/posters/the-dance-of-life.jpg',
+    './images/posters/the-man-with-the-golden-arm.jpg',
+    './images/posters/the-great-flamarion.jpg'
+  ];
+
+  const randomIndex = getRandomInteger(0, posters.length - 1);
+
+  return posters[randomIndex];
+}
 
 export const generateFilms = () => ({
   id: '0',
@@ -35,14 +47,16 @@ export const generateFilms = () => ({
     title: generateFilmsTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
     totalRating: 5.3,
-    poster: 'images/posters/blue-blazes.jpg',
+    poster: generetePosters(),
     ageRating: 0,
     director: 'Tom Ford',
     writers: [
-      'Takeshi Kitano'
+      'Takeshi Kitano',
+      'Dalton Trumbo'
     ],
     actors: [
-      'Morgan Freeman'
+      'Morgan Freeman',
+      'Audrey Hepburn'
     ],
     release: {
       date: '2019-05-11T00:00:00.000Z',
@@ -50,7 +64,9 @@ export const generateFilms = () => ({
     },
     runtime: 77,
     genre: [
-      'Comedy'
+      'Comedy',
+      'Horror',
+      'Thriller'
     ],
     description: generateDescription()
   },
