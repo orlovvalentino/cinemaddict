@@ -1,9 +1,9 @@
 import {createElement} from '../render.js';
-import {getFormatedDuration} from '../utils.js';
+import {getFormattedDuration} from '../utils.js';
 
 const createFilmTemplate = (film) => {
   const year = new Date(film.filmInfo.release.date).getFullYear();
-  const duration = getFormatedDuration(film.filmInfo.runtime);
+  const duration = getFormattedDuration(film.filmInfo.runtime);
 
   return (`
     <article class="film-card">

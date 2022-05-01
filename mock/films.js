@@ -36,7 +36,7 @@ const generetePosters = () => {
   const randomIndex = getRandomInteger(0, posters.length - 1);
 
   return posters[randomIndex];
-}
+};
 
 export const generateFilms = () => ({
   id: '0',
@@ -76,13 +76,4 @@ export const generateFilms = () => ({
     watchingDate: '2019-04-12T16:12:32.554Z',
     favorite: false
   }
-});
-
-
-export const generateComments = () =>({
-  id: '42',
-  author: 'Ilya O\'Reilly',
-  comment: 'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
-  date: '2019-05-11T16:12:32.554Z',
-  emotion: 'smile'
 });
