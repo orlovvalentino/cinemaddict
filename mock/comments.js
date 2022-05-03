@@ -15,8 +15,8 @@ const author = [
 ];
 const emotion = ['smile', 'sleeping', 'puke', 'angry'];
 
-export const generateComments = () =>({
-  id: '42',
+export const generateComment = () =>({
+  id: Math.floor(Math.random() * 100),
   author: getRandomData(author),
   comment: getRandomData(comments),
   date: '2019-05-11T16:12:32.554Z',

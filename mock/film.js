@@ -11,8 +11,8 @@ const generateDescription = () => {
 
   return descriptions[randomIndex];
 };
-const generateFilmsTitle = () => {
-  const filmsTitle = [
+const generateFilmTitle = () => {
+  const filmsTitles = [
     'Popeye the Sailor Meets Sindbad the Sailor',
     'Sagebrush Trail',
     'The Dance of Life',
@@ -21,11 +21,11 @@ const generateFilmsTitle = () => {
     'Popeye the Sailor Meets Sindbad the Sailor'
   ];
 
-  const randomIndex = getRandomInteger(0, filmsTitle.length - 1);
+  const randomIndex = getRandomInteger(0, filmsTitles.length - 1);
 
-  return filmsTitle[randomIndex];
+  return filmsTitles[randomIndex];
 };
-const generetePosters = () => {
+const generatePosters = () => {
   const posters = [
     './images/posters/popeye-meets-sinbad.png',
     './images/posters/the-dance-of-life.jpg',
@@ -38,16 +38,16 @@ const generetePosters = () => {
   return posters[randomIndex];
 };
 
-export const generateFilms = () => ({
+export const generateFilm = () => ({
   id: '0',
   comments: [
     1, 2
   ],
   filmInfo: {
-    title: generateFilmsTitle(),
+    title: generateFilmTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
     totalRating: 5.3,
-    poster: generetePosters(),
+    poster: generatePosters(),
     ageRating: 0,
     director: 'Tom Ford',
     writers: [

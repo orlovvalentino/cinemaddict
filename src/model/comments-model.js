@@ -1,6 +1,6 @@
-import {generateComments} from '../../mock/comments.js';
+import {generateComment} from '../../mock/comments.js';
 
 export  default class CommentsModel {
-  comments = Array.from({length:5}, generateComments);
+  comments = Array.from({length:5}, generateComment);
   getComments =() => this.comments;
 }
