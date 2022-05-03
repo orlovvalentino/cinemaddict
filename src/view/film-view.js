@@ -1,18 +1,23 @@
 import {createElement} from '../render.js';
+import {getFormattedDuration} from '../utils.js';
 
-const createFilmTemplate = () => (`
+const createFilmTemplate = (film) => {
+  const year = new Date(film.filmInfo.release.date).getFullYear();
+  const duration = getFormattedDuration(film.filmInfo.runtime);
+
+  return (`
     <article class="film-card">
       <a class="film-card__link">
-        <h3 class="film-card__title">Popeye the Sailor Meets Sindbad the Sailor</h3>
-        <p class="film-card__rating">6.3</p>
+        <h3 class="film-card__title">${film.filmInfo.title}</h3>
+        <p class="film-card__rating">${film.filmInfo.totalRating}</p>
         <p class="film-card__info">
-          <span class="film-card__year">1936</span>
-          <span class="film-card__duration">16m</span>
-          <span class="film-card__genre">Cartoon</span>
+          <span class="film-card__year">${year}</span>
+          <span class="film-card__duration">${duration}</span>
+          <span class="film-card__genre">${film.filmInfo.genre[0]}</span>
         </p>
-        <img src="./images/posters/popeye-meets-sinbad.png" alt="" class="film-card__poster">
-        <p class="film-card__description">In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…</p>
-        <span class="film-card__comments">0 comments</span>
+        <img src="${film.filmInfo.poster}" alt="${film.filmInfo.title}" class="film-card__poster">
+        <p class="film-card__description">${film.filmInfo.description}</p>
+        <span class="film-card__comments">${film.comments.length} comments</span>
       </a>
       <div class="film-card__controls">
         <button class="film-card__controls-item film-card__controls-item--add-to-watchlist film-card__controls-item--active" type="button">Add to watchlist</button>
@@ -21,10 +26,15 @@ const createFilmTemplate = () => (`
       </div>
     </article>
 `);
+};
 
 export default class FilmView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmTemplate();
+    return createFilmTemplate(this.film);
   }
 
   getElement() {
