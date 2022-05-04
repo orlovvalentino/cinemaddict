@@ -1,4 +1,3 @@
-import {createElement} from '../render.js';
 import {getFormattedDuration,humanizeTaskDueDate} from '../utils.js';
 import BaseView from './base-view.js';
 

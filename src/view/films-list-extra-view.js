@@ -13,6 +13,6 @@ export default class FilmsListExtraView extends BaseView{
   }
 
   get template() {
-    return createFilmsListExtraTemplate(this.title);
+    return createFilmsListExtraTemplate(this.#title);
   }
 }

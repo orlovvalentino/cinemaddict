@@ -16,6 +16,7 @@ export default class BaseView {
   }
 
   removeElement() {
+    this.#element.remove();
     this.#element = null;
   }
 }

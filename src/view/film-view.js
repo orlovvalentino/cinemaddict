@@ -28,7 +28,7 @@ const createFilmTemplate = (film) => {
 `);
 };
 
-export default class FilmView extends BaseView{
+export default class  FilmView extends BaseView{
   #film = null;
 
   constructor(film) {
