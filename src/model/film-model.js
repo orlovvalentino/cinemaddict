@@ -1,6 +1,8 @@
 import {generateFilm} from '../../mock/film';
 
 export  default class FilmModel {
-  film = generateFilm();
-  getFilm =() => this.film;
+  #film = generateFilm();
+  get film (){
+    return this.#film;
+  }
 }

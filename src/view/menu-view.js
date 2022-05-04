@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createMenuTemplate = () => (
   `<nav class="main-navigation">
@@ -9,20 +9,10 @@ const createMenuTemplate = () => (
   </nav>`
 );
 
-export default class MenuView {
-  getTemplate() {
-    return createMenuTemplate();
-  }
+export default class MenuView extends BaseView {
+  #template = createMenuTemplate();
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return this.#template;
   }
 }

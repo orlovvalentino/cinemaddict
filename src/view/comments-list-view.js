@@ -1,21 +1,12 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createCommentsListTemplate = () => '<ul class="film-details__comments-list"></ul>';
 
-export default class CommentsBlockView {
-  getTemplate() {
-    return createCommentsListTemplate();
+export default class CommentsBlockView extends BaseView{
+  #template = createCommentsListTemplate();
+
+  get template() {
+    return this.#template;
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }

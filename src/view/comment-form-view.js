@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createCommentsFormTemplate = () => (`
    <div class="film-details__new-comment">
@@ -32,20 +32,10 @@ const createCommentsFormTemplate = () => (`
   </div>
 `);
 
-export default class CommentFormView {
-  getTemplate() {
-    return createCommentsFormTemplate();
-  }
+export default class CommentFormView extends BaseView{
+  #template = createCommentsFormTemplate();
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return this.#template;
   }
 }

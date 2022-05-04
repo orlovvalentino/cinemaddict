@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createCommentsBLockTemplate = (count) => (`
     <section class="film-details__comments-wrap">
@@ -6,24 +6,15 @@ const createCommentsBLockTemplate = (count) => (`
     </section>
 `);
 
-export default class CommentsBlockView {
+export default class CommentsBlockView extends BaseView{
+  #count = null;
+
   constructor(count) {
-    this.count = count;
+    super();
+    this.#count = count;
   }
 
-  getTemplate() {
-    return createCommentsBLockTemplate(this.count);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createCommentsBLockTemplate(this.#count);
   }
 }

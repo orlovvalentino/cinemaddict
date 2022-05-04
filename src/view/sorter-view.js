@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createSorterTemplate = () => `<ul class="sort">
     <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -6,20 +6,10 @@ const createSorterTemplate = () => `<ul class="sort">
     <li><a href="#" class="sort__button">Sort by rating</a></li>
   </ul>`;
 
-export default class SorterView {
-  getTemplate() {
-    return createSorterTemplate();
-  }
+export default class SorterView extends BaseView{
+  #template = createSorterTemplate();
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return this.#template;
   }
 }

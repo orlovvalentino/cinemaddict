@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
 import {humanizeCommentDate} from '../utils';
+import BaseView from './base-view.js';
 
 const createCommentTemplate = (commentItem) => {
   const {author, comment, date, emotion} = commentItem;
@@ -22,24 +22,15 @@ const createCommentTemplate = (commentItem) => {
   );
 };
 
-export default class CommentView {
+export default class CommentView  extends BaseView{
+  #comment = null;
+
   constructor(comment) {
-    this.comment = comment;
+    super();
+    this.#comment = comment;
   }
 
-  getTemplate() {
-    return createCommentTemplate(this.comment);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createCommentTemplate(this.#comment);
   }
 }
