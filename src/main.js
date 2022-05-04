@@ -1,6 +1,5 @@
 import ProfileView from './view/profile-view.js';
 import MenuView from './view/menu-view.js';
-import SorterView from './view/sorter-view.js';
 
 import FilmsCountView from './view/films-count-view.js';
 
@@ -20,7 +19,7 @@ const commentsModel = new CommentsModel();
 
 render(new ProfileView(), siteHeaderElement);
 render(new MenuView(), siteMainElement);
-render(new SorterView(), siteMainElement);
+
 
 contentPresenter.init(siteMainElement,filmsModel, document.body, commentsModel);
 
