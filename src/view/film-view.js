@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
 import {getFormattedDuration} from '../utils.js';
+import BaseView from './base-view.js';
 
 const createFilmTemplate = (film) => {
   const year = new Date(film.filmInfo.release.date).getFullYear();
@@ -28,24 +28,15 @@ const createFilmTemplate = (film) => {
 `);
 };
 
-export default class FilmView {
+export default class  FilmView extends BaseView{
+  #film = null;
+
   constructor(film) {
-    this.film = film;
+    super();
+    this.#film = film;
   }
 
-  getTemplate() {
-    return createFilmTemplate(this.film);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createFilmTemplate(this.#film);
   }
 }

@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
 import {getFormattedDuration,humanizeTaskDueDate} from '../utils.js';
+import BaseView from './base-view.js';
 
 const filmPopupTemplate = (film) => {
   const {
@@ -86,24 +86,15 @@ const filmPopupTemplate = (film) => {
 `);
 };
 
-export default class FilmPopupView {
+export default class FilmPopupView extends BaseView{
+  #film = null;
+
   constructor(film) {
-    this.film = film;
+    super();
+    this.#film = film;
   }
 
-  getTemplate() {
-    return filmPopupTemplate(this.film);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return filmPopupTemplate(this.#film);
   }
 }

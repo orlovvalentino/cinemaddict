@@ -1,21 +1,10 @@
-import {createElement} from '../render.js';
+import BaseView from './base-view.js';
 
 const createContentTemplate = () => '<section class="films"></section>';
 
-export default class ContentView {
-  getTemplate() {
-    return createContentTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+export default class ContentView extends BaseView{
+  #template = createContentTemplate();
+  get template() {
+    return this.#template;
   }
 }
