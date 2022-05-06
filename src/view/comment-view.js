@@ -1,5 +1,5 @@
 import {humanizeCommentDate} from '../utils';
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createCommentTemplate = (commentItem) => {
   const {author, comment, date, emotion} = commentItem;
@@ -22,7 +22,7 @@ const createCommentTemplate = (commentItem) => {
   );
 };
 
-export default class CommentView  extends BaseView{
+export default class CommentView extends AbstractView {
   #comment = null;
 
   constructor(comment) {

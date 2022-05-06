@@ -1,12 +1,11 @@
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createCommentsListTemplate = () => '<ul class="film-details__comments-list"></ul>';
 
-export default class CommentsBlockView extends BaseView{
-  #template = createCommentsListTemplate();
+export default class CommentsBlockView extends AbstractView {
 
   get template() {
-    return this.#template;
+    return createCommentsListTemplate();
   }
 
 }

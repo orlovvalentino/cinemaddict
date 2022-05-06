@@ -1,4 +1,4 @@
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createSorterTemplate = () => `<ul class="sort">
     <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -6,10 +6,8 @@ const createSorterTemplate = () => `<ul class="sort">
     <li><a href="#" class="sort__button">Sort by rating</a></li>
   </ul>`;
 
-export default class SorterView extends BaseView{
-  #template = createSorterTemplate();
-
+export default class SorterView extends AbstractView {
   get template() {
-    return this.#template;
+    return createSorterTemplate();
   }
 }
