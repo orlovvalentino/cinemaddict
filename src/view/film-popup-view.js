@@ -1,6 +1,5 @@
 import {getFormattedDuration, humanizeTaskDueDate} from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
-import {remove} from '../framework/render';
 
 const filmPopupTemplate = (film) => {
   const {
