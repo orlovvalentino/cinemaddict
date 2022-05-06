@@ -5,7 +5,7 @@ import FilmsListExtraView from '../view/films-list-extra-view';
 import FilmView from '../view/film-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
 
-import {render, RenderPosition} from '../render';
+import {render,remove, RenderPosition} from '../framework/render.js';
 import FilmPopupView from '../view/film-popup-view';
 import CommentsBlockView from '../view/comments-block-view';
 import CommentView from '../view/comment-view';
@@ -78,7 +78,7 @@ export default class ContentPresenter {
 
     if (this.#mainFilms.length > FILMS_COUNT_PER_STEP) {
       render(this.#showMoreButton, this.#mainFilmsList.element);
-      this.#showMoreButton.element.addEventListener('click', this.#handleShowMoreButtonClick);
+      this.#showMoreButton.setClickHandler(this.#handleShowMoreButtonClick);
     }
 
 
@@ -89,14 +89,14 @@ export default class ContentPresenter {
 
   };
 
-  #handleShowMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #handleShowMoreButtonClick = () => {
     this.#mainFilms.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => this.#renderFilm(film, this.#mainFilmsListContainer.element));
 
     this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
 
     if (this.#renderedFilmsCount >= this.#mainFilms.length) {
-      this.#showMoreButton.removeElement();
+      this.#showMoreButton.removeClickHandler();
+      remove(this.#showMoreButton);
     }
   };
 
@@ -105,15 +105,15 @@ export default class ContentPresenter {
     let filmPopupComponent = null;
 
     const closePopup = () => {
-      filmPopupComponent.element.querySelector('.film-details__close-btn').removeEventListener('click', filmPopupComponent.element);
-      filmPopupComponent.removeElement();
+      filmPopupComponent.removeClickHandler();
+      remove(filmPopupComponent);
       document.body.classList.toggle('hide-overflow');
     };
 
     const onEscKeyDown = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        closePopup(filmPopupComponent);
+        closePopup();
         document.removeEventListener('keydown', onEscKeyDown);
       }
     };
@@ -127,17 +127,12 @@ export default class ContentPresenter {
         render(new CommentView(comment), this.#commentsBlockView.element);
       }
       render(new CommentFormView(), this.#commentsBlockView.element);
-      filmPopupComponent.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
-        closePopup(filmPopupComponent);
-      });
+      filmPopupComponent.setClickHandler(closePopup);
       document.body.classList.toggle('hide-overflow');
       document.addEventListener('keydown', onEscKeyDown);
     };
 
-    filmComponent.element.querySelector('.film-card__link').addEventListener('click', () => {
-      openPopup();
-    });
-
+    filmComponent.setClickHandler(openPopup);
 
     render(filmComponent, container);
   };

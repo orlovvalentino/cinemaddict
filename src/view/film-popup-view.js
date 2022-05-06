@@ -1,5 +1,6 @@
 import {getFormattedDuration, humanizeTaskDueDate} from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
+import {remove} from '../framework/render';
 
 const filmPopupTemplate = (film) => {
   const {
@@ -98,4 +99,20 @@ export default class FilmPopupView extends AbstractView {
   get template() {
     return filmPopupTemplate(this.#film);
   }
+
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  removeClickHandler = () => {
+    delete this._callback.click;
+    this.element.removeEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
+
 }
