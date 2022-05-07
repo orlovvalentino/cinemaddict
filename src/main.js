@@ -23,4 +23,4 @@ render(new MenuView(), siteMainElement);
 
 contentPresenter.init(siteMainElement,filmsModel, document.body, commentsModel);
 
-render(new FilmsCountView(), footerStatisticElement);
+render(new FilmsCountView(filmsModel.films.length), footerStatisticElement);
