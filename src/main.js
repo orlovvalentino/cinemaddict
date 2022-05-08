@@ -7,17 +7,19 @@ import {render} from './render.js';
 import ContentPresenter from './presenter/content-presenter';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
+import CustomerStorageModel from './model/customer-storage-model.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const filmsModel  = new FilmsModel();
+const customerStorageModel = new CustomerStorageModel();
 
 const contentPresenter = new ContentPresenter();
 const footerStatisticElement = document.querySelector('.footer__statistics');
 
 const commentsModel = new CommentsModel();
 
-render(new ProfileView(), siteHeaderElement);
+render(new ProfileView(customerStorageModel.watchedCount), siteHeaderElement);
 render(new MenuView(), siteMainElement);
 
 
