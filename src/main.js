@@ -19,8 +19,8 @@ const footerStatisticElement = document.querySelector('.footer__statistics');
 
 const commentsModel = new CommentsModel();
 
-render(new ProfileView(customerStorageModel.watchedCount), siteHeaderElement);
-render(new MenuView(), siteMainElement);
+render(new ProfileView(customerStorageModel.watchedRank), siteHeaderElement);
+render(new MenuView(customerStorageModel), siteMainElement);
 
 
 contentPresenter.init(siteMainElement,filmsModel, document.body, commentsModel);

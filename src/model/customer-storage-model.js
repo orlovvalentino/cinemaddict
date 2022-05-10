@@ -8,7 +8,7 @@ export default class CustomerStorageModel {
     return this.#customerStorage;
   }
 
-  get watchedCount() {
+  get watchedRank() {
     switch(true) {
       case (this.#watched >=1 && this.#watched <=10 ):
         return 'novice';

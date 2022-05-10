@@ -1,5 +1,5 @@
 export const customerStorage = ()=>({
-  watchlist:3,
-  watched:0,
-  favorites:4
+  watchlist:Math.floor(Math.random() * 10),
+  watched:Math.floor(Math.random() * 30),
+  favorites:Math.floor(Math.random() * 10)
 });
