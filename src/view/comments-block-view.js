@@ -1,4 +1,4 @@
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createCommentsBLockTemplate = (count) => (`
     <section class="film-details__comments-wrap">
@@ -6,7 +6,7 @@ const createCommentsBLockTemplate = (count) => (`
     </section>
 `);
 
-export default class CommentsBlockView extends BaseView{
+export default class CommentsBlockView extends AbstractView {
   #count = null;
 
   constructor(count) {

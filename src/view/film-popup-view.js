@@ -1,5 +1,5 @@
-import {getFormattedDuration,humanizeTaskDueDate} from '../utils.js';
-import BaseView from './base-view.js';
+import {getFormattedDuration, humanizeTaskDueDate} from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const filmPopupTemplate = (film) => {
   const {
@@ -7,7 +7,8 @@ const filmPopupTemplate = (film) => {
     poster,
     ageRating,
     alternativeTitle,
-    totalRating, director, writers,actors,genre,description,release} = film.filmInfo;
+    totalRating, director, writers, actors, genre, description, release
+  } = film.filmInfo;
   const duration = getFormattedDuration(film.filmInfo.runtime);
   const releaseDate = humanizeTaskDueDate(release.date);
 
@@ -86,15 +87,37 @@ const filmPopupTemplate = (film) => {
 `);
 };
 
-export default class FilmPopupView extends BaseView{
+export default class FilmPopupView extends AbstractView {
   #film = null;
+  #id = null;
 
   constructor(film) {
     super();
     this.#film = film;
+    this.#id = this.#film.id;
+  }
+
+  get id() {
+    return this.#id;
   }
 
   get template() {
     return filmPopupTemplate(this.#film);
   }
+
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  removeClickHandler = () => {
+    delete this._callback.click;
+    this.element.removeEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
+
 }

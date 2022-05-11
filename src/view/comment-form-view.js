@@ -1,4 +1,4 @@
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createCommentsFormTemplate = () => (`
    <div class="film-details__new-comment">
@@ -32,10 +32,8 @@ const createCommentsFormTemplate = () => (`
   </div>
 `);
 
-export default class CommentFormView extends BaseView{
-  #template = createCommentsFormTemplate();
-
+export default class CommentFormView extends AbstractView {
   get template() {
-    return this.#template;
+    return createCommentsFormTemplate();
   }
 }

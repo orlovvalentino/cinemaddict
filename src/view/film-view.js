@@ -1,5 +1,5 @@
 import {getFormattedDuration} from '../utils.js';
-import BaseView from './base-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createFilmTemplate = (film) => {
   const year = new Date(film.filmInfo.release.date).getFullYear();
@@ -28,7 +28,7 @@ const createFilmTemplate = (film) => {
 `);
 };
 
-export default class  FilmView extends BaseView{
+export default class FilmView extends AbstractView {
   #film = null;
 
   constructor(film) {
@@ -39,4 +39,14 @@ export default class  FilmView extends BaseView{
   get template() {
     return createFilmTemplate(this.#film);
   }
+
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
+  };
 }

@@ -39,7 +39,7 @@ const generatePosters = () => {
 };
 
 export const generateFilm = () => ({
-  id: '0',
+  id: Math.floor(Math.random() * 100),
   comments: [
     1, 2
   ],
