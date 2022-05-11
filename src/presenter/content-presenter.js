@@ -103,6 +103,7 @@ export default class ContentPresenter {
   };
 
   #renderFilm = (film, container) => {
+    let sortedComments = [];
     const filmComponent = new FilmView(film);
 
     const closePopup = () => {
@@ -122,17 +123,18 @@ export default class ContentPresenter {
     };
 
     const openPopup = () => {
+      sortedComments = film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
       if (this.#filmPopupComponent) {
-        if(film.id === this.#filmPopupComponent.id){
+        if (film.id === this.#filmPopupComponent.id) {
           return;
         }
         closePopup();
       }
       this.#filmPopupComponent = new FilmPopupView(film);
       render(this.#filmPopupComponent, this.#popupContainer);
-      this.#commentsBlockView = new CommentsBlockView(this.#comments.length);
+      this.#commentsBlockView = new CommentsBlockView(sortedComments.length);
       render(this.#commentsBlockView, this.#filmPopupComponent.element.querySelector('.film-details__bottom-container'));
-      for (const comment of this.#comments) {
+      for (const comment of sortedComments) {
         render(new CommentView(comment), this.#commentsBlockView.element);
       }
       render(new CommentFormView(), this.#commentsBlockView.element);

@@ -40,9 +40,7 @@ const generatePosters = () => {
 
 export const generateFilm = () => ({
   id: Math.floor(Math.random() * 100),
-  comments: [
-    1, 2
-  ],
+  comments: Array.from(new Set(Array.from({length: Math.floor(Math.random() * 10)}, () => Math.floor(Math.random() * 10)))),
   filmInfo: {
     title: generateFilmTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
