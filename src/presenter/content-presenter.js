@@ -2,16 +2,13 @@ import ContentView from '../view/content-view.js';
 import FilmsListView from '../view/films-list-view';
 import FilmsListContainerView from '../view/films-list-container-view';
 import FilmsListExtraView from '../view/films-list-extra-view';
-import FilmView from '../view/film-view';
 import ShowMoreButtonView from '../view/show-more-button-view';
 
 import {render, remove, RenderPosition} from '../framework/render.js';
-import FilmPopupView from '../view/film-popup-view';
-import CommentsBlockView from '../view/comments-block-view';
-import CommentView from '../view/comment-view';
-import CommentFormView from '../view/comment-form-view';
 import FilmsListEmptyView from '../view/films-list-empty';
 import SorterView from '../view/sorter-view';
+
+import FilmPresenter from './film-presenter.js';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -33,25 +30,18 @@ export default class ContentPresenter {
 
   #contentContainer = null;
   #popupContainer = null;
-  #filmPopupComponent = null;
   #filmsModel = null;
   #mainFilms = null;
   #relatedFilms = null;
   #commentedFilms = null;
-
   #commentsModel = null;
-  #comments = null;
-  #commentsBlockView = null;
-
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
-  #onEscKeyDown = null;
 
   init = (contentContainer, filmsModel, popupContainer, commentsModel) => {
     this.#contentContainer = contentContainer;
     this.#popupContainer = popupContainer;
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
-    this.#comments = [...this.#commentsModel.comments];
     this.#mainFilms = [...this.#filmsModel.films];
     this.#relatedFilms = [...this.#filmsModel.films].slice(0, 2);
     this.#commentedFilms = [...this.#filmsModel.films].slice(0, 2);
@@ -83,12 +73,9 @@ export default class ContentPresenter {
       this.#showMoreButton.setClickHandler(this.#handleShowMoreButtonClick);
     }
 
-
     for (let i = 0; i < Math.min(this.#mainFilms.length, FILMS_COUNT_PER_STEP); i++) {
       this.#renderFilm(this.#mainFilms[i], this.#mainFilmsListContainer.element);
     }
-
-
   };
 
   #handleShowMoreButtonClick = () => {
@@ -103,48 +90,7 @@ export default class ContentPresenter {
   };
 
   #renderFilm = (film, container) => {
-    let sortedComments = [];
-    const filmComponent = new FilmView(film);
-
-    const closePopup = () => {
-      this.#filmPopupComponent.removeClickHandler();
-      remove(this.#filmPopupComponent);
-      document.body.classList.toggle('hide-overflow');
-      document.removeEventListener('keydown', this.#onEscKeyDown);
-    };
-
-    this.#onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        closePopup();
-        document.removeEventListener('keydown', this.#onEscKeyDown);
-        this.#filmPopupComponent = null;
-      }
-    };
-
-    const openPopup = () => {
-      sortedComments = film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
-      if (this.#filmPopupComponent) {
-        if (film.id === this.#filmPopupComponent.id) {
-          return;
-        }
-        closePopup();
-      }
-      this.#filmPopupComponent = new FilmPopupView(film);
-      render(this.#filmPopupComponent, this.#popupContainer);
-      this.#commentsBlockView = new CommentsBlockView(sortedComments.length);
-      render(this.#commentsBlockView, this.#filmPopupComponent.element.querySelector('.film-details__bottom-container'));
-      for (const comment of sortedComments) {
-        render(new CommentView(comment), this.#commentsBlockView.element);
-      }
-      render(new CommentFormView(), this.#commentsBlockView.element);
-      this.#filmPopupComponent.setClickHandler(closePopup);
-      document.body.classList.toggle('hide-overflow');
-      document.addEventListener('keydown', this.#onEscKeyDown);
-    };
-
-    filmComponent.setClickHandler(openPopup);
-
-    render(filmComponent, container);
+    const filmPresenter = new FilmPresenter(film, container, this.#popupContainer, this.#commentsModel);
+    filmPresenter.init();
   };
 }
