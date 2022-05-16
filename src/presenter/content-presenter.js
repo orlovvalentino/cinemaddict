@@ -9,6 +9,7 @@ import SorterView from '../view/sorter-view';
 
 import FilmPresenter from './film-presenter.js';
 import ShowMoreButtonPresenter from './show-more-button-presenter';
+import FilmPopupPresenter from './popup-presenter';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -29,6 +30,8 @@ export default class ContentPresenter {
 
   #contentContainer = null;
   #popupContainer = null;
+  #popupCurrentFilmId = null;
+  #popupPresenter = null;
   #filmsModel = null;
   #mainFilms = null;
   #relatedFilms = null;
@@ -71,6 +74,7 @@ export default class ContentPresenter {
     for (let i = 0; i < Math.min(this.#mainFilms.length, this.#renderedFilmsCount); i++) {
       this.#renderFilm(this.#mainFilms[i], this.#mainFilmsListContainer.element);
     }
+    this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer, this.#commentsModel);
   };
 
   #showMoreFilms = () => {
@@ -92,7 +96,24 @@ export default class ContentPresenter {
   };
 
   #renderFilm = (film, container) => {
-    const filmPresenter = new FilmPresenter(film, container, this.#popupContainer, this.#commentsModel);
+    const filmPresenter = new FilmPresenter(film, container, this.#popupContainer, this.#commentsModel, this.popupCurrentFilmId);
     filmPresenter.init();
+    filmPresenter.setClickHandler(this.#openPopup);
+  };
+
+  #openPopup = (film) => {
+    this.#popupPresenter.open(film, this.popupCurrentFilmId,this.#setPopupCurrentFilmId);
+  };
+
+  get popupCurrentFilmId() {
+    return this.#popupCurrentFilmId;
+  }
+
+  set popupCurrentFilmId(newId) {
+    this.#popupCurrentFilmId = newId;
+  }
+
+  #setPopupCurrentFilmId = (newId) => {
+    this.popupCurrentFilmId = newId;
   };
 }

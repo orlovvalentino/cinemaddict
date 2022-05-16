@@ -14,7 +14,7 @@ export default class FilmPopupPresenter {
   #comments = null;
   #commentsBlockView = null;
 
-  constructor(container,commentsModel) {
+  constructor(container, commentsModel) {
     this.#container = container;
     this.#commentsModel = commentsModel;
     this.#comments = [...this.#commentsModel.comments];
@@ -27,16 +27,17 @@ export default class FilmPopupPresenter {
     document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 
-  open = (film, ) => {
+  open = (film, getPopupCurrentFilmId,setPopupCurrentFilmId) => {
     this.#film = film;
 
     if (this.#filmPopupComponent) {
-      if (this.#film.id === this.#filmPopupComponent.id) {
+      if (this.#film.id === getPopupCurrentFilmId) {
         return;
       }
       this.closePopup();
     }
     this.#filmPopupComponent = new FilmPopupView(this.#film);
+    setPopupCurrentFilmId(this.#film.id);
     render(this.#filmPopupComponent, this.#container);
 
     this.#filmPopupComponent.setClickHandler(this.closePopup);
