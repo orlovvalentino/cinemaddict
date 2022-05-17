@@ -1,5 +1,6 @@
 import FilmView from '../view/film-view';
-import {render} from '../framework/render';
+import {render, replace} from '../framework/render';
+import FilmControlsView from '../view/film-controls-view';
 
 export default class FilmPresenter {
   #film = null;
@@ -7,20 +8,39 @@ export default class FilmPresenter {
   #filmComponent = null;
   #popupContainer = null;
   #commentsModel = null;
+  #filmControlsComponent = null;
 
-  constructor(film, container, popupContainer, commentsModel) {
+  constructor(film, container, popupContainer, commentsModel, updateUserDetails) {
     this.#film = film;
     this.#container = container;
     this.#popupContainer = popupContainer;
     this.#commentsModel = commentsModel;
+    this.updateUserDetails = updateUserDetails;
   }
 
   init = () => {
     this.#filmComponent = new FilmView(this.#film);
     render(this.#filmComponent, this.#container);
+
+    this.#filmControlsComponent = new FilmControlsView(this.#film);
+    render(this.#filmControlsComponent, this.#filmComponent.element);
+    this.#setHandlersOnControls();
   };
 
-  setClickHandler = (callback) => {
-    this.#filmComponent.setClickHandler(callback);
+  setLinkClickHandler = (callback) => {
+    this.#filmComponent.setLinkClickHandler(callback);
+  };
+
+  #setHandlersOnControls = () => {
+    this.#filmControlsComponent.setWatchlistClickHandler(this.updateUserDetails);
+    this.#filmControlsComponent.setWatchedClickHandler(this.updateUserDetails);
+    this.#filmControlsComponent.setFavoriteClickHandler(this.updateUserDetails);
+  };
+
+  updateControls = (film) => {
+    const filmControlsComponentNew = new FilmControlsView(film);
+    replace(filmControlsComponentNew, this.#filmControlsComponent);
+    this.#filmControlsComponent = filmControlsComponentNew;
+    this.#setHandlersOnControls();
   };
 }

@@ -10,11 +10,6 @@ const createMenuTemplate = (watchlist,watched,favorites) => (
 );
 
 export default class MenuView extends AbstractView {
-  #customerStorage = null;
-  #watchlist = null;
-  #watched = null;
-  #favorites = null;
-
   constructor(customerStorageModel) {
     super();
     this.watchlist = customerStorageModel.customerStorage.watchlist;

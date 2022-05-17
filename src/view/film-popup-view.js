@@ -3,14 +3,14 @@ import AbstractView from '../framework/view/abstract-view.js';
 
 const filmPopupTemplate = (film) => {
   const {
-    title,
-    poster,
-    ageRating,
-    alternativeTitle,
-    totalRating, director, writers, actors, genre, description, release
-  } = film.filmInfo;
-  const duration = getFormattedDuration(film.filmInfo.runtime);
-  const releaseDate = humanizeTaskDueDate(release.date);
+      title,
+      poster,
+      ageRating,
+      alternativeTitle,
+      totalRating, director, writers, actors, genre, description, release
+    } = film.filmInfo,
+    duration = getFormattedDuration(film.filmInfo.runtime),
+    releaseDate = humanizeTaskDueDate(release.date);
 
   return (`
     <section class="film-details">
@@ -74,12 +74,6 @@ const filmPopupTemplate = (film) => {
               </p>
             </div>
           </div>
-
-          <section class="film-details__controls">
-            <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-            <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-            <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
-          </section>
         </div>
         <div class="film-details__bottom-container"></div>
       </form>
@@ -119,5 +113,4 @@ export default class FilmPopupView extends AbstractView {
     evt.preventDefault();
     this._callback.click();
   };
-
 }

@@ -1,20 +1,25 @@
-import {customerStorage} from '../../mock/customer-storage.js';
+import {filmsModel} from './films-model';
 
 export default class CustomerStorageModel {
-  #customerStorage = customerStorage();
-  #watched = this.#customerStorage.watched;
+  #films = filmsModel.films;
+
+  #customerStorage = {
+    watched: this.#films.filter((item) => item.userDetails.alreadyWatched === true).length,
+    watchlist: this.#films.filter((item) => item.userDetails.watchlist === true).length,
+    favorites: this.#films.filter((item) => item.userDetails.favorite === true).length
+  };
 
   get customerStorage() {
     return this.#customerStorage;
   }
 
   get watchedRank() {
-    switch(true) {
-      case (this.#watched >=1 && this.#watched <=10 ):
+    switch (true) {
+      case (this.#customerStorage.watched >= 1 && this.#customerStorage.watched <= 10):
         return 'novice';
-      case (this.#watched >=11 && this.#watched <=20 ):
+      case (this.#customerStorage.watched >= 11 && this.#customerStorage.watched <= 20):
         return 'fun';
-      case (this.#watched >=21):
+      case (this.#customerStorage.watched >= 21):
         return 'movie buff';
       default:
         return null;

@@ -39,6 +39,12 @@ export default class ContentPresenter {
   #commentsModel = null;
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
 
+  #FilmsPresenter = {
+    mainFilmsPresenter: new Map(),
+    relatedFilmsPresenter: new Map(),
+    commentedFilmsPresenter: new Map()
+  };
+
   init = (contentContainer, filmsModel, popupContainer, commentsModel) => {
     this.#contentContainer = contentContainer;
     this.#popupContainer = popupContainer;
@@ -55,13 +61,13 @@ export default class ContentPresenter {
       render(this.#topRatedFilmsListContainer, this.#topRatedFilmsList.element);
       render(this.#sorterView, this.#contentComponent.element, RenderPosition.BEFOREBEGIN);
       for (const film of this.#relatedFilms) {
-        this.#renderFilm(film, this.#topRatedFilmsListContainer.element);
+        this.#renderFilm(film, this.#topRatedFilmsListContainer.element, this.#FilmsPresenter.relatedFilmsPresenter);
       }
 
       render(this.#mostCommentedFilmsList, this.#contentComponent.element);
       render(this.#mostCommentedFilmsListContainer, this.#mostCommentedFilmsList.element);
       for (const film of this.#commentedFilms) {
-        this.#renderFilm(film, this.#mostCommentedFilmsListContainer.element);
+        this.#renderFilm(film, this.#mostCommentedFilmsListContainer.element, this.#FilmsPresenter.commentedFilmsPresenter);
       }
     } else {
       render(this.#filmsListEmpty, this.#contentComponent.element);
@@ -72,14 +78,14 @@ export default class ContentPresenter {
     this.#showMoreButton(this.#mainFilms.length > this.#renderedFilmsCount);
 
     for (let i = 0; i < Math.min(this.#mainFilms.length, this.#renderedFilmsCount); i++) {
-      this.#renderFilm(this.#mainFilms[i], this.#mainFilmsListContainer.element);
+      this.#renderFilm(this.#mainFilms[i], this.#mainFilmsListContainer.element, this.#FilmsPresenter.mainFilmsPresenter);
     }
     this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer, this.#commentsModel);
   };
 
   #showMoreFilms = () => {
     this.#mainFilms.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
-      .forEach((film) => this.#renderFilm(film, this.#mainFilmsListContainer.element));
+      .forEach((film) => this.#renderFilm(film, this.#mainFilmsListContainer.element), this.#FilmsPresenter.mainFilmsPresenter);
     this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
     if (this.#renderedFilmsCount >= this.#mainFilms.length) {
       this.#showMoreButtonPresenter.destroy();
@@ -95,14 +101,28 @@ export default class ContentPresenter {
     this.#showMoreButtonPresenter.init(this.#showMoreFilms);
   };
 
-  #renderFilm = (film, container) => {
-    const filmPresenter = new FilmPresenter(film, container, this.#popupContainer, this.#commentsModel, this.popupCurrentFilmId);
+  #renderFilm = (film, container, mapRendered) => {
+    const filmPresenter = new FilmPresenter(film, container, this.#popupContainer, this.#commentsModel, this.#updateUserDetails);
+    mapRendered.set(film.id, filmPresenter);
     filmPresenter.init();
-    filmPresenter.setClickHandler(this.#openPopup);
+    filmPresenter.setLinkClickHandler(this.#openPopup);
+  };
+
+  #updateUserDetails = (film, key) => {
+    film.userDetails[key] = !film.userDetails[key];
+    for (const item in this.#FilmsPresenter) {
+      const presenter = this.#FilmsPresenter[item];
+      if (presenter.get(film.id)) {
+        presenter.get(film.id).updateControls(film);
+      }
+    }
+    if (this.popupCurrentFilmId) {
+      this.#popupPresenter.updateControls();
+    }
   };
 
   #openPopup = (film) => {
-    this.#popupPresenter.open(film, this.popupCurrentFilmId,this.#setPopupCurrentFilmId);
+    this.#popupPresenter.open(film, this.#updateUserDetails, this.popupCurrentFilmId, this.#setPopupCurrentFilmId);
   };
 
   get popupCurrentFilmId() {
