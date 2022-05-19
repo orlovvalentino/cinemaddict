@@ -4,9 +4,9 @@ export default class CustomerStorageModel {
   #films = filmsModel.films;
 
   #customerStorage = {
-    watched: this.#films.filter((item) => item.userDetails.alreadyWatched === true).length,
-    watchlist: this.#films.filter((item) => item.userDetails.watchlist === true).length,
-    favorites: this.#films.filter((item) => item.userDetails.favorite === true).length
+    watched: this.#films.filter((item) => item.userDetails.alreadyWatched).length,
+    watchlist: this.#films.filter((item) => item.userDetails.watchlist).length,
+    favorites: this.#films.filter((item) => item.userDetails.favorite).length
   };
 
   get customerStorage() {

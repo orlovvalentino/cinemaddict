@@ -122,7 +122,7 @@ export default class ContentPresenter {
   };
 
   #openPopup = (film) => {
-    this.#popupPresenter.open(film, this.#updateUserDetails, this.popupCurrentFilmId, this.#setPopupCurrentFilmId);
+    this.#popupPresenter.open(film, this.#updateUserDetails, this.popupCurrentFilmId, this._setPopupCurrentFilmId);
   };
 
   get popupCurrentFilmId() {
@@ -133,7 +133,7 @@ export default class ContentPresenter {
     this.#popupCurrentFilmId = newId;
   }
 
-  #setPopupCurrentFilmId = (newId) => {
+  _setPopupCurrentFilmId = (newId) => {
     this.popupCurrentFilmId = newId;
   };
 }
