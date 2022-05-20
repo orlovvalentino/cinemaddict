@@ -37,10 +37,15 @@ const generatePosters = () => {
 
   return posters[randomIndex];
 };
+const getRandom = (arg) => Math.floor(Math.random() * arg);
+
 
 export const generateFilm = () => ({
-  id: Math.floor(Math.random() * 100),
-  comments: Array.from(new Set(Array.from({length: Math.floor(Math.random() * 10)}, () => Math.floor(Math.random() * 10)))),
+  id: getRandom(1000),
+  comments: Array.from(new Set(Array.from(
+    {length: getRandom(10)},
+    () => getRandom(10)
+  ))),
   filmInfo: {
     title: generateFilmTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
@@ -69,9 +74,9 @@ export const generateFilm = () => ({
     description: generateDescription()
   },
   userDetails: {
-    watchlist: false,
-    alreadyWatched: true,
+    watchlist: Math.random() < 0.5,
+    alreadyWatched: Math.random() < 0.5,
     watchingDate: '2019-04-12T16:12:32.554Z',
-    favorite: false
+    favorite: Math.random() < 0.5
   }
 });

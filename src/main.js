@@ -5,13 +5,12 @@ import FilmsCountView from './view/films-count-view.js';
 
 import {render} from './render.js';
 import ContentPresenter from './presenter/content-presenter';
-import FilmsModel from './model/films-model.js';
+import {filmsModel} from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 import CustomerStorageModel from './model/customer-storage-model.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
-const filmsModel  = new FilmsModel();
 const customerStorageModel = new CustomerStorageModel();
 
 const contentPresenter = new ContentPresenter();
