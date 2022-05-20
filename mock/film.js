@@ -1,5 +1,36 @@
 import {getRandomInteger} from '../src/utils.js';
 
+const generateDate = ()=>{
+  const dates = [
+    '2015-05-11T00:00:00.000Z',
+    '2016-05-11T00:00:00.000Z',
+    '2017-05-11T00:00:00.000Z',
+    '2018-05-11T00:00:00.000Z',
+    '2019-05-11T00:00:00.000Z',
+    '2020-05-11T00:00:00.000Z',
+    '2021-05-11T00:00:00.000Z',
+  ];
+  const randomIndex = getRandomInteger(0, dates.length - 1);
+
+  return dates[randomIndex];
+};
+const generateRating = ()=>{
+  const ratings = [
+    1.1,
+    2.2,
+    3.3,
+    4.4,
+    5.5,
+    6.6,
+    7.7,
+    8.8,
+    9.9
+  ];
+  const randomIndex = getRandomInteger(0, ratings.length - 1);
+
+  return ratings[randomIndex];
+};
+
 const generateDescription = () => {
   const descriptions = [
     'Oscar-winning film, a war drama about two young people, from the creators of timeless classic "Nu, Pogodi!" and "Alice in Wonderland", with the best fight scenes since Bruce Lee.',
@@ -49,7 +80,7 @@ export const generateFilm = () => ({
   filmInfo: {
     title: generateFilmTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
-    totalRating: 5.3,
+    totalRating: generateRating(),
     poster: generatePosters(),
     ageRating: 0,
     director: 'Tom Ford',
@@ -62,7 +93,7 @@ export const generateFilm = () => ({
       'Audrey Hepburn'
     ],
     release: {
-      date: '2019-05-11T00:00:00.000Z',
+      date: generateDate(),
       releaseCountry: 'Finland'
     },
     runtime: 77,
