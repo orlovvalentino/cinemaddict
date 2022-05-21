@@ -1,9 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
-// sort__button--active
+import {SortType} from '../const';
+
 const createSorterTemplate = (sort) => `<ul class="sort">
-    <li><a href="#" data-sort="default" class="sort__button ${sort ==='default' ? 'sort__button--active':''}">Sort by default</a></li>
-    <li><a href="#" data-sort="date" class="sort__button ${sort ==='date' ? 'sort__button--active':''}">Sort by date</a></li>
-    <li><a href="#" data-sort="rating" class="sort__button ${sort ==='rating' ? 'sort__button--active':''} ">Sort by rating</a></li>
+    <li><a href="#" data-sort="${SortType.DEFAULT}" class="sort__button ${sort === SortType.DEFAULT ? 'sort__button--active':''}">Sort by default</a></li>
+    <li><a href="#" data-sort="${SortType.DATE}" class="sort__button ${sort === SortType.DATE ? 'sort__button--active':''}">Sort by date</a></li>
+    <li><a href="#" data-sort="${SortType.RATING}" class="sort__button ${sort === SortType.RATING ? 'sort__button--active':''} ">Sort by rating</a></li>
   </ul>`;
 
 export default class SorterView extends AbstractView {
@@ -30,6 +31,9 @@ export default class SorterView extends AbstractView {
   };
 
   #setClickHandler = (evt) => {
+    if(evt.target.tagName !== 'A'){
+      return;
+    }
     evt.preventDefault();
     evt.target.classList.add('sort__button--active');
     this._callback.click(evt.target.dataset.sort);

@@ -6,10 +6,12 @@ import FilmsListExtraView from '../view/films-list-extra-view';
 import {render, RenderPosition} from '../framework/render.js';
 import FilmsListEmptyView from '../view/films-list-empty';
 import SorterView from '../view/sorter-view';
+import {SortType} from '../const';
 
 import FilmPresenter from './film-presenter.js';
 import ShowMoreButtonPresenter from './show-more-button-presenter';
 import FilmPopupPresenter from './popup-presenter';
+
 
 const FILMS_COUNT_PER_STEP = 5;
 const SORT_DEFAULT = 'default';
@@ -153,21 +155,22 @@ export default class ContentPresenter {
       return true;
     }
     switch (sort) {
-      case('default'):
-        this.#currentSort = 'default';
+      case SortType.DEFAULT:
+        this.#currentSort = SortType.DEFAULT;
         return this.#sortFilmsByDefault();
-      case('date'):
-        this.#currentSort = 'date';
+      case SortType.DATE:
+        this.#currentSort = SortType.DATE;
         return this.#sortFilmsByDate();
-      case('rating'):
-        this.#currentSort = 'rating';
+      case SortType.RATING:
+        this.#currentSort = SortType.RATING;
         return this.#sortFilmsByRating();
     }
   };
 
   #clearMainFilmsList = () => {
-    this.#mainFilmsListContainer.element.innerHTML = '';
+    this.#FilmsPresenter.mainFilmsPresenter.forEach((presenter)=> presenter.destroy());
     this.#FilmsPresenter.mainFilmsPresenter.clear();
+    this.#mainFilmsListContainer.element.innerHTML = '';
   };
 
   #renderMainFilmsList = () => {

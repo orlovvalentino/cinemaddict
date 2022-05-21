@@ -1,5 +1,5 @@
 import FilmView from '../view/film-view';
-import {render, replace} from '../framework/render';
+import {render, replace, remove} from '../framework/render';
 import FilmControlsView from '../view/film-controls-view';
 
 export default class FilmPresenter {
@@ -19,9 +19,12 @@ export default class FilmPresenter {
   }
 
   init = () => {
+    const prevFilmComponent = this.#filmComponent;
     this.#filmComponent = new FilmView(this.#film);
+    if (prevFilmComponent !== null) {
+      return;
+    }
     render(this.#filmComponent, this.#container);
-
     this.#filmControlsComponent = new FilmControlsView(this.#film);
     render(this.#filmControlsComponent, this.#filmComponent.element);
     this.#setHandlersOnControls();
@@ -42,5 +45,9 @@ export default class FilmPresenter {
     replace(filmControlsComponentNew, this.#filmControlsComponent);
     this.#filmControlsComponent = filmControlsComponentNew;
     this.#setHandlersOnControls();
+  };
+
+  destroy = () => {
+    remove(this.#filmComponent);
   };
 }
