@@ -1,4 +1,4 @@
-import {getFormattedDuration, humanizeTaskDueDate} from '../../utils.js';
+import {getFormattedDuration, getFormattedReleaseDate} from '../../utils.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 const filmPopupTemplate = (film, count) => {
@@ -10,7 +10,7 @@ const filmPopupTemplate = (film, count) => {
       totalRating, director, writers, actors, genre, description, release
     } = film.filmInfo,
     duration = getFormattedDuration(film.filmInfo.runtime),
-    releaseDate = humanizeTaskDueDate(release.date);
+    releaseDate = getFormattedReleaseDate(release.date);
 
   return (`
     <section class="film-details">

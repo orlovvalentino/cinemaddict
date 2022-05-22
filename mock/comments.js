@@ -20,10 +20,16 @@ const author = [
   'Orlov Valentin'
 ];
 const emotion = ['smile', 'sleeping', 'puke', 'angry'];
+const dates = [
+  '2019-05-11T16:12:32.554Z',
+  '2022-05-22T16:12:32.554Z',
+  '2022-05-21T16:12:32.554Z',
+  '2022-05-20T16:12:32.554Z',
+];
 
 export const generateComment = () =>({
   author: getRandomData(author),
   comment: getRandomData(comments),
-  date: '2019-05-11T16:12:32.554Z',
+  date: getRandomData(dates),
   emotion: getRandomData(emotion)
 });
