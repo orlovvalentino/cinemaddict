@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const filmPopupControlsTemplate = (userDetails) => {
   const watchlist = userDetails.watchlist,
@@ -53,5 +53,4 @@ export default class FilmPopupControlsView extends AbstractView {
     evt.preventDefault();
     this._callback.favoriteClick(this.#film, 'favorite');
   };
-
 }

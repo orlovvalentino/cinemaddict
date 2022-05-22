@@ -1,9 +1,8 @@
-import FilmPopupView from '../view/film-popup-view';
+import FilmPopupView from '../view/popup/film-popup-view';
 import {remove, render, replace} from '../framework/render';
-import CommentsBlockView from '../view/comments-block-view';
-import CommentView from '../view/comment-view';
-import CommentFormView from '../view/comment-form-view';
-import FilmPopupControlsView from '../view/film-popup-controls-view';
+import CommentView from '../view/popup/comment-view';
+import CommentFormView from '../view/popup/comment-form-view';
+import FilmPopupControlsView from '../view/popup/film-popup-controls-view';
 
 export default class FilmPopupPresenter {
   #film = null;
@@ -13,8 +12,8 @@ export default class FilmPopupPresenter {
   #sortedComments = [];
   #commentsModel = null;
   #comments = null;
-  #commentsBlockView = null;
   #filmPopupControlsView = null;
+  #commentFormView = null;
   #updateUserDetails = () => true;
 
   constructor(container, commentsModel) {
@@ -31,8 +30,9 @@ export default class FilmPopupPresenter {
     this.setPopupCurrentFilmId(null);
   };
 
-  open = (film,  updateUserDetails, getPopupCurrentFilmId, setPopupCurrentFilmId) => {
+  open = (film, updateUserDetails, getPopupCurrentFilmId, setPopupCurrentFilmId) => {
     this.#film = film;
+    this.#sortedComments = this.#film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
     this.getPopupCurrentFilmId = getPopupCurrentFilmId;
     this.setPopupCurrentFilmId = setPopupCurrentFilmId;
     this.#updateUserDetails = updateUserDetails;
@@ -43,7 +43,7 @@ export default class FilmPopupPresenter {
       }
       this.#closePopup();
     }
-    this.#filmPopupComponent = new FilmPopupView(this.#film);
+    this.#filmPopupComponent = new FilmPopupView(this.#film, this.#sortedComments);
     this.setPopupCurrentFilmId(this.#film.id);
     render(this.#filmPopupComponent, this.#container);
 
@@ -82,12 +82,14 @@ export default class FilmPopupPresenter {
 
   #addBlockReview = () => {
     this.#sortedComments = this.#film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
-    this.#commentsBlockView = new CommentsBlockView(this.#sortedComments.length);
-    render(this.#commentsBlockView, this.#filmPopupComponent.element.querySelector('.film-details__bottom-container'));
-    for (const comment of this.#sortedComments) {
-      render(new CommentView(comment), this.#commentsBlockView.element);
+    if (this.#sortedComments.length > 0) {
+      for (const comment of this.#sortedComments) {
+        render(new CommentView(comment), this.#filmPopupComponent.element.querySelector('.film-details__comments-list'));
+      }
     }
-    render(new CommentFormView(), this.#commentsBlockView.element);
+    this.#commentFormView = new CommentFormView();
+    render(this.#commentFormView, this.#filmPopupComponent.element.querySelector('.film-details__comments-wrap'));
+    this.#commentFormView.setEmojiChangeHandler();
   };
 
   updateControls = () => {

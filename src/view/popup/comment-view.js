@@ -1,5 +1,5 @@
-import {humanizeCommentDate} from '../utils';
-import AbstractView from '../framework/view/abstract-view.js';
+import {humanizeCommentDate} from '../../utils';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const createCommentTemplate = (commentItem) => {
   const {author, comment, date, emotion} = commentItem;
