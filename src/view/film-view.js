@@ -1,18 +1,17 @@
-import {getFormattedDuration} from '../utils.js';
+import {getFormattedDuration,getFormattedReleaseDate} from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 const createFilmTemplate = (film) => {
-  const year = new Date(film.filmInfo.release.date).getFullYear(),
+  const releaseDate = getFormattedReleaseDate(film.filmInfo.release.date),
     duration = getFormattedDuration(film.filmInfo.runtime);
 
   return (`
     <article class="film-card">
       <a class="film-card__link">
-      <pre>${film.id}</pre>
         <h3 class="film-card__title">${film.filmInfo.title}</h3>
         <p class="film-card__rating">${film.filmInfo.totalRating}</p>
         <p class="film-card__info">
-          <span class="film-card__year">${year}</span>
+          <span class="film-card__year">${releaseDate}</span>
           <span class="film-card__duration">${duration}</span>
           <span class="film-card__genre">${film.filmInfo.genre[0]}</span>
         </p>

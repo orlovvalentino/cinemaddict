@@ -1,7 +1,7 @@
-import {getFormattedDuration, humanizeTaskDueDate} from '../utils.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import {getFormattedDuration, getFormattedReleaseDate} from '../../utils.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
-const filmPopupTemplate = (film) => {
+const filmPopupTemplate = (film, count) => {
   const {
       title,
       poster,
@@ -10,7 +10,7 @@ const filmPopupTemplate = (film) => {
       totalRating, director, writers, actors, genre, description, release
     } = film.filmInfo,
     duration = getFormattedDuration(film.filmInfo.runtime),
-    releaseDate = humanizeTaskDueDate(release.date);
+    releaseDate = getFormattedReleaseDate(release.date);
 
   return (`
     <section class="film-details">
@@ -75,7 +75,12 @@ const filmPopupTemplate = (film) => {
             </div>
           </div>
         </div>
-        <div class="film-details__bottom-container"></div>
+        <div class="film-details__bottom-container">
+            <section class="film-details__comments-wrap">
+                <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${count}</span></h3>
+                ${count > 0 ? '<ul class="film-details__comments-list"></ul>':''}
+            </section>
+        </div>
       </form>
     </section>
 `);
@@ -84,10 +89,12 @@ const filmPopupTemplate = (film) => {
 export default class FilmPopupView extends AbstractView {
   #film = null;
   #id = null;
+  #count = null;
 
-  constructor(film) {
+  constructor(film, sortedComments) {
     super();
     this.#film = film;
+    this.#count = sortedComments.length;
     this.#id = this.#film.id;
   }
 
@@ -96,7 +103,7 @@ export default class FilmPopupView extends AbstractView {
   }
 
   get template() {
-    return filmPopupTemplate(this.#film);
+    return filmPopupTemplate(this.#film, this.#count);
   }
 
   setClickHandler = (callback) => {
@@ -112,5 +119,9 @@ export default class FilmPopupView extends AbstractView {
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
+  };
+
+  _restoreHandlers = () => {
+
   };
 }

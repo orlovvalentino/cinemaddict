@@ -1,20 +1,20 @@
 import {getRandomInteger} from '../src/utils.js';
 
-const generateDate = ()=>{
+const generateDate = () => {
   const dates = [
-    '2015-05-11T00:00:00.000Z',
-    '2016-05-11T00:00:00.000Z',
-    '2017-05-11T00:00:00.000Z',
-    '2018-05-11T00:00:00.000Z',
-    '2019-05-11T00:00:00.000Z',
-    '2020-05-11T00:00:00.000Z',
-    '2021-05-11T00:00:00.000Z',
+    '2015-07-02T00:00:00.000Z',
+    '2016-06-13T00:00:00.000Z',
+    '2017-05-25T00:00:00.000Z',
+    '2018-04-30T00:00:00.000Z',
+    '2019-03-07T00:00:00.000Z',
+    '2020-02-09T00:00:00.000Z',
+    '2021-01-06T00:00:00.000Z',
   ];
   const randomIndex = getRandomInteger(0, dates.length - 1);
 
   return dates[randomIndex];
 };
-const generateRating = ()=>{
+const generateRating = () => {
   const ratings = [
     1.1,
     2.2,
@@ -96,7 +96,7 @@ export const generateFilm = () => ({
       date: generateDate(),
       releaseCountry: 'Finland'
     },
-    runtime: 77,
+    runtime: getRandom(200),
     genre: [
       'Comedy',
       'Horror',
