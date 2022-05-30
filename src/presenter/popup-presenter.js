@@ -20,6 +20,7 @@ export default class FilmPopupPresenter {
     this.#container = container;
     this.#commentsModel = commentsModel;
   }
+  
   get comments(){
     return this.#commentsModel.comments
   }

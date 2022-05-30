@@ -6,6 +6,7 @@ export default class CommentsModel extends Observable {
     ...item,
     id: i,
   }));
+  
   get comments() {
     return this.#comments;
   }

@@ -54,7 +54,6 @@ export default class ContentPresenter {
     this.#popupContainer = popupContainer;
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
-
     render(this.#contentComponent, this.#contentContainer);
 
     if (this.mainFilms.length > 0) {

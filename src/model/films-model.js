@@ -17,7 +17,6 @@ class FilmsModel extends Observable {
     if (index === -1) {
       throw new Error("Can't update unexisting film");
     }
-
     this.#films = [
       ...this.#films.slice(0, index),
       update,
