@@ -19,7 +19,9 @@ export default class FilmPopupPresenter {
   constructor(container, commentsModel) {
     this.#container = container;
     this.#commentsModel = commentsModel;
-    this.#comments = [...this.#commentsModel.comments];
+  }
+  get comments(){
+    return this.#commentsModel.comments
   }
 
   #closePopup = () => {
@@ -32,7 +34,7 @@ export default class FilmPopupPresenter {
 
   open = (film, updateUserDetails, getPopupCurrentFilmId, setPopupCurrentFilmId) => {
     this.#film = film;
-    this.#sortedComments = this.#film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
+    this.#sortedComments = this.#film.comments.map((item) => this.comments.find((filmItem) => filmItem.id === item));
     this.getPopupCurrentFilmId = getPopupCurrentFilmId;
     this.setPopupCurrentFilmId = setPopupCurrentFilmId;
     this.#updateUserDetails = updateUserDetails;
@@ -81,7 +83,7 @@ export default class FilmPopupPresenter {
   };
 
   #addBlockReview = () => {
-    this.#sortedComments = this.#film.comments.map((item) => this.#comments.find((filmItem) => filmItem.id === item));
+    this.#sortedComments = this.#film.comments.map((item) => this.comments.find((filmItem) => filmItem.id === item));
     if (this.#sortedComments.length > 0) {
       for (const comment of this.#sortedComments) {
         render(new CommentView(comment), this.#filmPopupComponent.element.querySelector('.film-details__comments-list'));
