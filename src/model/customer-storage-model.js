@@ -1,12 +1,13 @@
-import {filmsModel} from './films-model';
+import { filmsModel } from './films-model';
 
 export default class CustomerStorageModel {
   #films = filmsModel.films;
 
   #customerStorage = {
-    watched: this.#films.filter((item) => item.userDetails.alreadyWatched).length,
+    watched: this.#films.filter((item) => item.userDetails.alreadyWatched)
+      .length,
     watchlist: this.#films.filter((item) => item.userDetails.watchlist).length,
-    favorites: this.#films.filter((item) => item.userDetails.favorite).length
+    favorites: this.#films.filter((item) => item.userDetails.favorite).length,
   };
 
   get customerStorage() {
@@ -15,11 +16,13 @@ export default class CustomerStorageModel {
 
   get watchedRank() {
     switch (true) {
-      case (this.#customerStorage.watched >= 1 && this.#customerStorage.watched <= 10):
+      case this.#customerStorage.watched >= 1 &&
+        this.#customerStorage.watched <= 10:
         return 'novice';
-      case (this.#customerStorage.watched >= 11 && this.#customerStorage.watched <= 20):
+      case this.#customerStorage.watched >= 11 &&
+        this.#customerStorage.watched <= 20:
         return 'fun';
-      case (this.#customerStorage.watched >= 21):
+      case this.#customerStorage.watched >= 21:
         return 'movie buff';
       default:
         return null;

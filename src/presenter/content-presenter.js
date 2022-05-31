@@ -1,19 +1,19 @@
-import ContentView from "../view/content-view.js";
-import FilmsListView from "../view/films-list-view";
-import FilmsListContainerView from "../view/films-list-container-view";
-import FilmsListExtraView from "../view/films-list-extra-view";
+import ContentView from '../view/content-view.js';
+import FilmsListView from '../view/films-list-view';
+import FilmsListContainerView from '../view/films-list-container-view';
+import FilmsListExtraView from '../view/films-list-extra-view';
 
-import { render, RenderPosition } from "../framework/render.js";
-import FilmsListEmptyView from "../view/films-list-empty";
-import SorterView from "../view/sorter-view";
-import { SortType } from "../const";
+import { render, RenderPosition } from '../framework/render.js';
+import FilmsListEmptyView from '../view/films-list-empty';
+import SorterView from '../view/sorter-view';
+import { SortType } from '../const';
 
-import FilmPresenter from "./film-presenter.js";
-import ShowMoreButtonPresenter from "./show-more-button-presenter";
-import FilmPopupPresenter from "./popup-presenter";
+import FilmPresenter from './film-presenter.js';
+import ShowMoreButtonPresenter from './show-more-button-presenter';
+import FilmPopupPresenter from './popup-presenter';
 
 const FILMS_COUNT_PER_STEP = 5;
-const SORT_DEFAULT = "default";
+const SORT_DEFAULT = 'default';
 
 export default class ContentPresenter {
   #contentComponent = new ContentView();
@@ -23,10 +23,10 @@ export default class ContentPresenter {
   #mainFilmsListContainer = new FilmsListContainerView();
   #filmsListEmpty = new FilmsListEmptyView();
 
-  #topRatedFilmsList = new FilmsListExtraView("Top rated");
+  #topRatedFilmsList = new FilmsListExtraView('Top rated');
   #topRatedFilmsListContainer = new FilmsListContainerView();
 
-  #mostCommentedFilmsList = new FilmsListExtraView("Most commented");
+  #mostCommentedFilmsList = new FilmsListExtraView('Most commented');
   #mostCommentedFilmsListContainer = new FilmsListContainerView();
   #showMoreButtonPresenter = null;
 
@@ -45,6 +45,7 @@ export default class ContentPresenter {
     relatedFilmsPresenter: new Map(),
     commentedFilmsPresenter: new Map(),
   };
+
   get mainFilms() {
     return this.#filmsModel.films;
   }
@@ -214,7 +215,7 @@ export default class ContentPresenter {
       presenter.destroy()
     );
     this.#FilmsPresenter.mainFilmsPresenter.clear();
-    this.#mainFilmsListContainer.element.innerHTML = "";
+    this.#mainFilmsListContainer.element.innerHTML = '';
   };
 
   #renderMainFilmsList = () => {

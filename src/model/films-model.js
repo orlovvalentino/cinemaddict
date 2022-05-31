@@ -1,5 +1,5 @@
-import { generateFilm } from "../../mock/film";
-import Observable from "../framework/observable";
+import { generateFilm } from '../../mock/film';
+import Observable from '../framework/observable';
 
 class FilmsModel extends Observable {
   #films = Array.from({ length: 22 }, generateFilm);
@@ -7,6 +7,7 @@ class FilmsModel extends Observable {
   get films() {
     return this.#films;
   }
+
   set films(newFilms) {
     this.#films = newFilms;
   }
@@ -15,7 +16,7 @@ class FilmsModel extends Observable {
     const index = this.#films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
-      throw new Error("Can't update unexisting film");
+      throw new Error('Can\'t update unexisting film');
     }
     this.#films = [
       ...this.#films.slice(0, index),
