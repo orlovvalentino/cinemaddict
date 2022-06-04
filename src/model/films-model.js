@@ -12,7 +12,7 @@ class FilmsModel extends Observable {
     this.#films = newFilms;
   }
 
-  updateFilm = (update) => {
+  updateFilm = (updateType, update) => {
     const index = this.#films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
@@ -23,6 +23,7 @@ class FilmsModel extends Observable {
       update,
       ...this.#films.slice(index + 1),
     ];
+    this._notify(updateType,update);
   };
 }
 const filmsModel = new FilmsModel();

@@ -6,7 +6,7 @@ import FilmsListExtraView from '../view/films-list-extra-view';
 import { render, RenderPosition } from '../framework/render.js';
 import FilmsListEmptyView from '../view/films-list-empty';
 import SorterView from '../view/sorter-view';
-import { SortType } from '../const';
+import {SortType, UpdateType} from '../const';
 
 import FilmPresenter from './film-presenter.js';
 import ShowMoreButtonPresenter from './show-more-button-presenter';
@@ -48,6 +48,10 @@ export default class ContentPresenter {
 
   get mainFilms() {
     return this.#filmsModel.films;
+  }
+
+  set mainFilms(films){
+    this.#filmsModel.films = [...films];
   }
 
   init = (contentContainer, filmsModel, popupContainer, commentsModel) => {
@@ -161,6 +165,7 @@ export default class ContentPresenter {
 
   #updateUserDetails = (film, key) => {
     film.userDetails[key] = !film.userDetails[key];
+    this.#filmsModel.updateFilm(UpdateType.MAJOR,film);
     for (const item in this.#FilmsPresenter) {
       const presenter = this.#FilmsPresenter[item];
       if (presenter.get(film.id)) {
@@ -239,7 +244,7 @@ export default class ContentPresenter {
   };
 
   #sortFilmsByDate = () => {
-    this.mainFilms = [...this.#filmsModel.films].sort(
+    this.mainFilms = [...this.mainFilms].sort(
       (a, b) =>
         new Date(a.filmInfo.release.date).getTime() -
         new Date(b.filmInfo.release.date).getTime()
@@ -249,7 +254,7 @@ export default class ContentPresenter {
   };
 
   #sortFilmsByRating = () => {
-    this.mainFilms = [...this.#filmsModel.films].sort(
+    this.mainFilms = [...this.mainFilms].sort(
       (a, b) => a.filmInfo.totalRating - b.filmInfo.totalRating
     );
     this.#clearMainFilmsList();
