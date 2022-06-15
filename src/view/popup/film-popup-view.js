@@ -1,7 +1,7 @@
 import {getFormattedDuration, getFormattedReleaseDate} from '../../utils.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
-const filmPopupTemplate = (film, count) => {
+const filmPopupTemplate = (film) => {
   const {
       title,
       poster,
@@ -75,12 +75,7 @@ const filmPopupTemplate = (film, count) => {
             </div>
           </div>
         </div>
-        <div class="film-details__bottom-container">
-            <section class="film-details__comments-wrap">
-                <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${count}</span></h3>
-                ${count > 0 ? '<ul class="film-details__comments-list"></ul>':''}
-            </section>
-        </div>
+        <div class="film-details__bottom-container"></div>
       </form>
     </section>
 `);
@@ -119,9 +114,5 @@ export default class FilmPopupView extends AbstractView {
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
-  };
-
-  _restoreHandlers = () => {
-
   };
 }

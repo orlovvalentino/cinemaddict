@@ -82,7 +82,7 @@ export default class ContentPresenter {
     this.#renderTopRelatedFilms();
     this.#renderMostCommentedFilms();
 
-    this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer, this.#commentsModel);
+    this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer);
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelFilterEvent);

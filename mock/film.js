@@ -70,13 +70,16 @@ const generatePosters = () => {
 };
 const getRandom = (arg) => Math.floor(Math.random() * arg);
 
+let commentId = 0;
+
+function range(start, end) {
+  commentId = end;
+  return Array(end - start + 1).fill().map((_, idx) => start + idx);
+}
 
 export const generateFilm = () => ({
   id: getRandom(1000),
-  comments: Array.from(new Set(Array.from(
-    {length: getRandom(10)},
-    () => getRandom(10)
-  ))),
+  comments: range(commentId, commentId+5),
   filmInfo: {
     title: generateFilmTitle(),
     alternativeTitle: 'Laziness Who Sold Themselves',
