@@ -1,4 +1,5 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
+import he from 'he';
 
 const createCommentsFormTemplate = (data) => {
   const emoji = data.emoji;
@@ -73,7 +74,7 @@ export default class CommentFormView extends AbstractStatefulView {
 
   #inputChangeHandler = (evt)=>{
     this.updateElement({
-      text: evt.target.value,
+      text: he.encode(evt.target.value),
     });
   };
 
