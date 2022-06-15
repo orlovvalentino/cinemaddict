@@ -1,15 +1,16 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 
 const createCommentsFormTemplate = (data) => {
-  const {emoji} = data;
+  const emoji = data.emoji;
+  const text = data.text ?? '';
 
   return (
-    `<div class="film-details__new-comment">
+    `<form class="film-details__new-comment" id="formReview">
     <div class="film-details__add-emoji-label">
         ${emoji ? `<img src="images/emoji/${emoji}.png" width="55" height="55" alt="emoji-smile">` : ''}
     </div>
     <label class="film-details__comment-label">
-      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
     </label>
 
     <div class="film-details__emoji-list">
@@ -40,14 +41,14 @@ const createCommentsFormTemplate = (data) => {
         <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
       </label>
     </div>
-  </div>`
+  </form>`
   );
 };
 
 export default class CommentFormView extends AbstractStatefulView {
   constructor() {
     super();
-    this._state = {};
+    // this._state = state;
   }
 
   get template() {
@@ -64,10 +65,20 @@ export default class CommentFormView extends AbstractStatefulView {
     this.updateElement({
       emoji: evt.target.value,
     });
+  };
 
+  setInputChangeHandler = ()=>{
+    this.element.querySelector('.film-details__comment-input').addEventListener('blur', this.#inputChangeHandler);
+  };
+
+  #inputChangeHandler = (evt)=>{
+    this.updateElement({
+      text: evt.target.value,
+    });
   };
 
   _restoreHandlers = () => {
     this.setEmojiChangeHandler();
+    this.setInputChangeHandler();
   };
 }

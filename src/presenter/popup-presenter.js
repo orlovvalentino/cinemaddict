@@ -27,6 +27,7 @@ export default class FilmPopupPresenter {
     this.#container = container;
     this.#commentsModel = new CommentsModel();
     this.#commentsModel.addObserver(this.#handleModelEvent);
+    this._state = {};
   }
 
   get comments() {
@@ -44,6 +45,11 @@ export default class FilmPopupPresenter {
     document.body.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this.#onEscKeyDown);
     this.setPopupCurrentFilmId(null);
+    this.#formReviewSubmit();
+  };
+
+  #formReviewSubmit = () => {
+    new FormData(document.getElementById('formReview'));
   };
 
   #getSortedComments = ()=> this.#film.comments.map((item) => this.comments.find((filmItem) => filmItem.id === item)).filter((x)=> x !== undefined);
@@ -120,9 +126,10 @@ export default class FilmPopupPresenter {
     const commentView = new CommentView(this.#getSortedComments());
     commentView.setDeleteClickHandler(this.#updateCommentsData);
     render(commentView, this.#filmPopupComponent.element.querySelector('.film-details__bottom-container'));
-    this.#commentFormView = new CommentFormView();
+    this.#commentFormView = new CommentFormView(this._state);
     render(this.#commentFormView, commentView.element);
     this.#commentFormView.setEmojiChangeHandler();
+    this.#commentFormView.setInputChangeHandler();
   };
 
   #cleanBlockReview = ()=>{
