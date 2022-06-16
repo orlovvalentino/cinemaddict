@@ -1,27 +1,26 @@
 import ProfileView from './view/profile-view.js';
-import MenuView from './view/menu-view.js';
-
 import FilmsCountView from './view/films-count-view.js';
 
-import {render} from './render.js';
+import { render } from './render.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 import ContentPresenter from './presenter/content-presenter';
-import {filmsModel} from './model/films-model.js';
+import { filmsModel } from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
-import CustomerStorageModel from './model/customer-storage-model.js';
+import FilterModel from './model/filter-model.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
-const customerStorageModel = new CustomerStorageModel();
-
-const contentPresenter = new ContentPresenter();
-const footerStatisticElement = document.querySelector('.footer__statistics');
-
+const filterModel = new FilterModel();
 const commentsModel = new CommentsModel();
 
-render(new ProfileView(customerStorageModel.watchedRank), siteHeaderElement);
-render(new MenuView(customerStorageModel), siteMainElement);
+const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
+const contentPresenter = new ContentPresenter(siteMainElement, filmsModel, document.body, commentsModel,filterModel);
 
+const footerStatisticElement = document.querySelector('.footer__statistics');
 
-contentPresenter.init(siteMainElement,filmsModel, document.body, commentsModel);
+render(new ProfileView(filterModel.watchedRank), siteHeaderElement);
+
+filterPresenter.init();
+contentPresenter.init();
 
 render(new FilmsCountView(filmsModel.films.length), footerStatisticElement);
