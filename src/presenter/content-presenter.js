@@ -217,7 +217,7 @@ export default class ContentPresenter {
 
   #updateUserDetails = (film, key) => {
     film.userDetails[key] = !film.userDetails[key];
-    this.#filmsModel.updateFilm(UpdateType.MAJOR, film);
+    this.#filmsModel.updateFilm(UpdateType.MINOR, film);
     for (const item in this.#FilmsPresenter) {
       const presenter = this.#FilmsPresenter[item];
       if (presenter.get(film.id)) {
