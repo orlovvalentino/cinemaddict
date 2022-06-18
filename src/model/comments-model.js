@@ -1,15 +1,27 @@
-import { generateComment } from '../../mock/comments.js';
 import Observable from '../framework/observable';
+import {UpdateType} from '../const';
 
 export default class CommentsModel extends Observable {
-  #comments = Array.from({ length: 100 }, generateComment).map((item, i) => ({
-    ...item,
-    id: i,
-  }));
+  #filmsApiService = null;
+  #comments = [];
+
+  constructor(filmsApiService) {
+    super();
+    this.#filmsApiService = filmsApiService;
+  }
 
   get comments() {
     return this.#comments;
   }
+
+  init = async (id) => {
+    try {
+      this.#comments = await this.#filmsApiService.getComments(id);
+    } catch (err) {
+      this.#comments = [];
+    }
+    this._notify(UpdateType.INIT);
+  };
 
   set comments(newComments) {
     this.#comments = newComments;
