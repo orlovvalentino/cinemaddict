@@ -55,11 +55,17 @@ export default class FilmPopupPresenter {
   #formReviewSubmit = () => {
     const data = {};
     const formData = new FormData(document.querySelector('.film-details__inner'));
-    formData.forEach((value, key) => data[key] = value);
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    this.#filmPopupComponent.showLoader();
     this.#sendComment.addComment(data, this.#film.id)
       .then((resp)=>{
         this.#commentsModel.updateComments(UpdateType.MAJOR, resp.comments);
         this.#filmsModel.updateCommentFilm(UpdateType.MAJOR, resp.movie);
+      })
+      .finally(()=>{
+        this.#filmPopupComponent.hideLoader();
       });
   };
 
@@ -146,11 +152,12 @@ export default class FilmPopupPresenter {
   };
 
   #cleanBlockReview = () => {
-    this.#filmPopupComponent.element.querySelector('.film-details__bottom-container').innerHTML = '';
+    this.#filmPopupComponent.element.querySelector('.film-details__bottom-container').innerHTML = '<div class="lds-dual-ring"></div>';
   };
 
   #deleteCommentsData = (id) => {
     const commentIndex = this.#film.comments.findIndex((item) => item === Number(id));
+    this.#filmPopupComponent.showLoader();
     this.#sendComment.deleteComment(id)
       .then(()=>{
         const comments = [...this.#film.comments];
@@ -161,9 +168,10 @@ export default class FilmPopupPresenter {
 
         this.#commentsModel.deleteComment(UpdateType.MAJOR, id);
         this.#filmsModel.updateFilm(UpdateType.MAJOR, this.#film);
+      })
+      .finally(()=>{
+        this.#filmPopupComponent.hideLoader();
       });
-
-
   };
 
   updateControls = () => {

@@ -75,7 +75,9 @@ const filmPopupTemplate = (film) => {
             </div>
           </div>
         </div>
-        <div class="film-details__bottom-container"></div>
+        <div class="film-details__bottom-container">
+            <div class="lds-dual-ring"></div>
+        </div>
       </form>
     </section>
 `);
@@ -134,5 +136,13 @@ export default class FilmPopupView extends AbstractView {
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
+  };
+
+  showLoader = () => {
+    this.element.querySelector('.film-details__bottom-container').classList.add('loading');
+  };
+
+  hideLoader = () => {
+    this.element.querySelector('.film-details__bottom-container').classList.remove('loading');
   };
 }

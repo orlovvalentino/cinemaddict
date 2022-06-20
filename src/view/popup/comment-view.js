@@ -42,6 +42,7 @@ export default class CommentView extends AbstractView {
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
+    evt.target.innerText = 'Deleting...';
     evt.preventDefault();
     this._callback.deleteClick(evt.target.dataset.id, 'delete');
   };

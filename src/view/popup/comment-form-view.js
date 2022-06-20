@@ -75,7 +75,7 @@ export default class CommentFormView extends AbstractStatefulView {
   };
 
   #inputKeyPress = (evt) => {
-    this._state.text = evt.target.value;
+    this._state.text =  he.encode(evt.target.value);
   };
 
   _restoreHandlers = () => {
