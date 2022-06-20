@@ -5,6 +5,7 @@ import FilmsListExtraView from '../view/films-list-extra-view';
 
 import {remove, render, RenderPosition, replace} from '../framework/render.js';
 import FilmsListEmptyView from '../view/films-list-empty';
+import LoadingView from '../view/loading-view';
 import SorterView from '../view/sorter-view';
 import {FilterType, SortType, UpdateType} from '../const';
 
@@ -20,9 +21,11 @@ export default class ContentPresenter {
   #currentSort = SortType.DEFAULT;
 
   #sorterView = null;
-  #mainFilmsList = new FilmsListView();
+  // #mainFilmsList = new FilmsListView();
+  #mainFilmsList = null;
   #mainFilmsListContainer = new FilmsListContainerView();
   #filmsListEmpty = new FilmsListEmptyView();
+  #loadingView = new LoadingView();
 
   #topRatedFilmsList = new FilmsListExtraView('Top rated');
   #topRatedFilmsListContainer = new FilmsListContainerView();
@@ -41,6 +44,7 @@ export default class ContentPresenter {
   #commentedFilms = null;
   #commentsModel = null;
   #filterModel = null;
+  #isLoading = true;
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
 
   #FilmsPresenter = {
@@ -77,20 +81,24 @@ export default class ContentPresenter {
   init = () => {
     render(this.#contentComponent, this.#contentContainer);
 
+    this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelFilterEvent);
+    this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer,this.#commentsModel);
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     this.#renderMainBoard();
 
     this.#renderTopRelatedFilms();
     this.#renderMostCommentedFilms();
-
-    this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer);
-
-    this.#filmsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelFilterEvent);
   };
 
   #renderMainBoard = () => {
     const prevSorterView = this.#sorterView;
     if (this.mainFilms.length > 0) {
+      this.#mainFilmsList = new FilmsListView();
       this.#sorterView = new SorterView(this.#currentSort);
       this.#sorterView.setClickHandler(this.#sortFilms);
       if(prevSorterView === null){
@@ -100,28 +108,33 @@ export default class ContentPresenter {
         remove(prevSorterView);
       }
 
-      render(this.#mainFilmsList, this.#contentComponent.element,RenderPosition.AFTERBEGIN);
-    } else {
-      if(this.#mainFilmsList){
-        replace(this.#filmsListEmpty,this.#mainFilmsList);
-        return;
+      render(this.#mainFilmsList, this.#contentComponent.element, RenderPosition.AFTERBEGIN);
+
+      render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
+      this.#renderMainFilmsList();
+
+      if(this.#showMoreButtonPresenter !== null){
+        this.#showMoreButtonPresenter.destroy();
+        this.#showMoreButtonPresenter = null;
       }
+      this.#showMoreButton(this.mainFilms.length > this.#renderedFilmsCount);
+    } else {
       render(this.#filmsListEmpty, this.#contentComponent.element);
     }
+  };
 
-    render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
-    this.#renderMainFilmsList();
-
-    if(this.#showMoreButtonPresenter !== null){
-      this.#showMoreButtonPresenter.destroy();
-      this.#showMoreButtonPresenter = null;
-    }
-    this.#showMoreButton(this.mainFilms.length > this.#renderedFilmsCount);
+  #renderLoading = () => {
+    render(this.#loadingView, this.#contentComponent.element, RenderPosition.AFTERBEGIN);
   };
 
   #handleModelEvent = () => {
+    remove(this.#loadingView);
     this.#clearMainFilmsList();
+    this.#isLoading = false;
+
     this.#renderMainBoard();
+    this.#renderTopRelatedFilms();
+    this.#renderMostCommentedFilms();
   };
 
   #handleModelFilterEvent = () => {
@@ -204,7 +217,7 @@ export default class ContentPresenter {
 
   #updateUserDetails = (film, key) => {
     film.userDetails[key] = !film.userDetails[key];
-    this.#filmsModel.updateFilm(UpdateType.MAJOR, film);
+    this.#filmsModel.updateFilm(UpdateType.MINOR, film);
     for (const item in this.#FilmsPresenter) {
       const presenter = this.#FilmsPresenter[item];
       if (presenter.get(film.id)) {

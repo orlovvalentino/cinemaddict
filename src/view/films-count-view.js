@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-const createFilmsCountTemplate = (count) => count > 1 ? `<p>${count} movies inside</p>` : `<p>${count} movie inside</p>`;
+const createFilmsCountTemplate = (count) => count > 1 ? `<p>${count} movies inside</p>` : `<p>${count} movies inside</p>`;
 
 export default class FilmsCountView extends AbstractView {
   #count = null;
