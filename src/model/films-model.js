@@ -48,6 +48,22 @@ export default class FilmsModel extends Observable {
     }
   };
 
+  updateCommentFilm = (updateType, update) => {
+    const index = this.#films.findIndex((film) => film.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting film');
+    }
+    const updatedTask = this.#adaptToClient(update);
+
+    this.#films = [
+      ...this.#films.slice(0, index),
+      updatedTask,
+      ...this.#films.slice(index + 1),
+    ];
+    this._notify(updateType, updatedTask);
+  };
+
   #adaptToClient = (film) => {
     const adaptedFilm = {...film,
       filmInfo: film['film_info'],

@@ -11,7 +11,7 @@ import FilterModel from './model/filter-model.js';
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 
-import FilmsApiService from './tasks-api-service';
+import FilmsApiService from './films-api-service';
 
 const AUTHORIZATION = 'Basic qawsedrftgyhujxd55';
 const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';

@@ -14,7 +14,7 @@ const filmPopupTemplate = (film) => {
 
   return (`
     <section class="film-details">
-      <form class="film-details__inner" action="" method="get">
+      <form class="film-details__inner" action="" method="get" id="formReview">
         <div class="film-details__top-container">
           <div class="film-details__close">
             <button class="film-details__close-btn" type="button">close</button>
@@ -104,6 +104,26 @@ export default class FilmPopupView extends AbstractView {
   setClickHandler = (callback) => {
     this._callback.click = callback;
     this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
+  };
+
+  setSubmitHandler = (callback)=>{
+    this._callback.submit = callback;
+    const form =  this.element.querySelector('.film-details__inner');
+    const formData = new FormData(form);
+    this.element.querySelector('.film-details__inner').addEventListener('keydown',(event) => {
+      if ((event.metaKey && event.keyCode === 13) || (event.ctrlKey && event.keyCode === 13) ) {
+        this.#formSubmit(formData);
+      }
+    });
+  };
+
+  #formSubmit = (formData)=>{
+    this._callback.submit(formData);
+  };
+
+  removeSubmitHandler = ()=>{
+    delete this._callback.submit;
+    this.element.querySelector('.film-details__inner').removeEventListener('keydown', this.#formSubmit);
   };
 
   removeClickHandler = () => {
