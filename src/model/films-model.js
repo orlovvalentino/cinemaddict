@@ -70,6 +70,7 @@ export default class FilmsModel extends Observable {
       userDetails: film['user_details'],
     };
 
+    adaptedFilm.filmInfo.release.releaseCountry = film['film_info']['release']['release_country'];
     adaptedFilm.filmInfo.alternativeTitle = film['film_info']['alternative_title'];
     adaptedFilm.filmInfo.ageRating = film['film_info']['age_rating'];
     adaptedFilm.filmInfo.totalRating = film['film_info']['total_rating'];
@@ -78,6 +79,7 @@ export default class FilmsModel extends Observable {
 
     delete adaptedFilm['film_info'];
     delete adaptedFilm['user_details'];
+    delete adaptedFilm['filmInfo']['release_country'];
     delete adaptedFilm['filmInfo']['alternative_title'];
     delete adaptedFilm['filmInfo']['age_rating'];
     delete adaptedFilm['filmInfo']['total_rating'];

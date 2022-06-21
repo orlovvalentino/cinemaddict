@@ -31,10 +31,8 @@ const humanizeCommentDate = (date) => {
       return 'Today';
     case (dayjs(date).isYesterday()):
       return 'Yesterday';
-    case(dayjs(date).toNow(true) === '2 days'):
-      return '2 days ago';
     default:
-      return dayjs(date).format('YYYY/mm/DD hh:mm');
+      return dayjs(date).fromNow();
   }
 };
 
