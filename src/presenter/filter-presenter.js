@@ -17,10 +17,14 @@ export default class FilterPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
+  #watched = () => this.#filmsModel.films.filter((item) => item.userDetails.alreadyWatched).length;
+  #watchlist = () => this.#filmsModel.films.filter((item) => item.userDetails.watchlist).length;
+  #favorites = () => this.#filmsModel.films.filter((item) => item.userDetails.favorite).length;
+
   init = () => {
     const prevFilterView = this.#filterView;
 
-    this.#filterView = new FilterView(this.#filterModel.filters, this.#filterModel.currentFilter);
+    this.#filterView = new FilterView(this.#filterModel.currentFilter, this.#watched, this.#watchlist, this.#favorites);
 
     if (prevFilterView === null) {
       render(this.#filterView, this.#contentContainer);
