@@ -14,7 +14,7 @@ const filmPopupTemplate = (film) => {
 
   return (`
     <section class="film-details">
-      <form class="film-details__inner" action="" method="get">
+      <form class="film-details__inner" action="" method="get" id="formReview">
         <div class="film-details__top-container">
           <div class="film-details__close">
             <button class="film-details__close-btn" type="button">close</button>
@@ -75,7 +75,9 @@ const filmPopupTemplate = (film) => {
             </div>
           </div>
         </div>
-        <div class="film-details__bottom-container"></div>
+        <div class="film-details__bottom-container">
+            <div class="lds-dual-ring"></div>
+        </div>
       </form>
     </section>
 `);
@@ -106,6 +108,26 @@ export default class FilmPopupView extends AbstractView {
     this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#clickHandler);
   };
 
+  setSubmitHandler = (callback)=>{
+    this._callback.submit = callback;
+    const form =  this.element.querySelector('.film-details__inner');
+    const formData = new FormData(form);
+    this.element.querySelector('.film-details__inner').addEventListener('keydown',(event) => {
+      if ((event.metaKey && event.keyCode === 13) || (event.ctrlKey && event.keyCode === 13) ) {
+        this.#formSubmit(formData);
+      }
+    });
+  };
+
+  #formSubmit = (formData)=>{
+    this._callback.submit(formData);
+  };
+
+  removeSubmitHandler = ()=>{
+    delete this._callback.submit;
+    this.element.querySelector('.film-details__inner').removeEventListener('keydown', this.#formSubmit);
+  };
+
   removeClickHandler = () => {
     delete this._callback.click;
     this.element.removeEventListener('click', this.#clickHandler);
@@ -114,5 +136,13 @@ export default class FilmPopupView extends AbstractView {
   #clickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
+  };
+
+  showLoader = () => {
+    this.element.querySelector('.film-details__bottom-container').classList.add('loading');
+  };
+
+  hideLoader = () => {
+    this.element.querySelector('.film-details__bottom-container').classList.remove('loading');
   };
 }

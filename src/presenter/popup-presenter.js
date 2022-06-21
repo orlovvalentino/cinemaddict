@@ -1,14 +1,16 @@
 import FilmPopupView from '../view/popup/film-popup-view';
 import {remove, render, replace} from '../framework/render';
-import FilmsModel from '../model/films-model.js';
 import CommentView from '../view/popup/comment-view';
 import CommentFormView from '../view/popup/comment-form-view';
 import FilmPopupControlsView from '../view/popup/film-popup-controls-view';
+import FilmsApiService from '../films-api-service';
 import {UpdateType} from '../const';
 
-const filmsModel = new FilmsModel();
+const AUTHORIZATION = 'Basic qawsedrftgyhujxd55';
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
 
 export default class FilmPopupPresenter {
+  #sendComment = new FilmsApiService(END_POINT, AUTHORIZATION);
   #film = null;
 
   #container = null;
@@ -16,28 +18,20 @@ export default class FilmPopupPresenter {
   #filmPopupComponent = null;
 
   #filmsModel = null;
-
-  #sortedComments = [];
-
   #commentsModel = null;
-
   #comments = null;
-
   #commentsView = new Map();
-
   #filmPopupControlsView = null;
-
   #commentFormView = null;
-
   #updateUserDetails = () => true;
 
 
-  constructor(container,commentsModel) {
-    this.#filmsModel = filmsModel;
+  constructor(container,commentsModel,filmsModel) {
     this.#container = container;
     this.#commentsModel = commentsModel;
-    this.#commentsModel.addObserver(this.#handleModelEvent);
+    this.#filmsModel = filmsModel;
     this._state = {};
+
   }
 
   get comments() {
@@ -51,7 +45,7 @@ export default class FilmPopupPresenter {
 
   #closePopup = () => {
     this.#filmPopupComponent.removeClickHandler();
-    this.#formReviewSubmit();
+    this.#filmPopupComponent.removeSubmitHandler();
     remove(this.#filmPopupComponent);
     document.body.classList.toggle('hide-overflow');
     document.removeEventListener('keydown', this.#onEscKeyDown);
@@ -59,10 +53,21 @@ export default class FilmPopupPresenter {
   };
 
   #formReviewSubmit = () => {
-    new FormData(document.getElementById('formReview'));
+    const data = {};
+    const formData = new FormData(document.querySelector('.film-details__inner'));
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    this.#filmPopupComponent.showLoader();
+    this.#sendComment.addComment(data, this.#film.id)
+      .then((resp)=>{
+        this.#commentsModel.updateComments(UpdateType.MAJOR, resp.comments);
+        this.#filmsModel.updateCommentFilm(UpdateType.MAJOR, resp.movie);
+      })
+      .finally(()=>{
+        this.#filmPopupComponent.hideLoader();
+      });
   };
-
-  #getSortedComments = () => this.#film.comments.map((item) => this.comments.find((filmItem) => filmItem.id === item)).filter((x) => x !== undefined);
 
   open = (
     film,
@@ -70,6 +75,7 @@ export default class FilmPopupPresenter {
     getPopupCurrentFilmId,
     setPopupCurrentFilmId
   ) => {
+    this.#commentsModel.addObserver(this.#handleModelEvent);
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#film = film;
     this.getPopupCurrentFilmId = getPopupCurrentFilmId;
@@ -85,12 +91,13 @@ export default class FilmPopupPresenter {
     }
     this.#filmPopupComponent = new FilmPopupView(
       this.#film,
-      this.#getSortedComments()
+      this.comments
     );
     this.setPopupCurrentFilmId(this.#film.id);
     render(this.#filmPopupComponent, this.#container);
 
     this.#filmPopupComponent.setClickHandler(this.#closePopup);
+    this.#filmPopupComponent.setSubmitHandler(this.#formReviewSubmit);
     document.body.classList.toggle('hide-overflow');
     document.addEventListener('keydown', this.#onEscKeyDown);
     this.#addBlockReview();
@@ -135,8 +142,8 @@ export default class FilmPopupPresenter {
   };
 
   #addBlockReview = () => {
-    const commentView = new CommentView(this.#getSortedComments());
-    commentView.setDeleteClickHandler(this.#updateCommentsData);
+    const commentView = new CommentView(this.comments);
+    commentView.setDeleteClickHandler(this.#deleteCommentsData);
     render(commentView, this.#filmPopupComponent.element.querySelector('.film-details__bottom-container'));
     this.#commentFormView = new CommentFormView(this._state);
     render(this.#commentFormView, commentView.element);
@@ -145,18 +152,26 @@ export default class FilmPopupPresenter {
   };
 
   #cleanBlockReview = () => {
-    this.#filmPopupComponent.element.querySelector('.film-details__bottom-container').innerHTML = '';
+    this.#filmPopupComponent.element.querySelector('.film-details__bottom-container').innerHTML = '<div class="lds-dual-ring"></div>';
   };
 
-  #updateCommentsData = (id) => {
+  #deleteCommentsData = (id) => {
     const commentIndex = this.#film.comments.findIndex((item) => item === Number(id));
-    this.#film.comments = [
-      ...this.#film.comments.slice(0, commentIndex),
-      ...this.#film.comments.slice(commentIndex + 1),
-    ];
+    this.#filmPopupComponent.showLoader();
+    this.#sendComment.deleteComment(id)
+      .then(()=>{
+        const comments = [...this.#film.comments];
+        this.#film.comments = [
+          ...comments.slice(0, commentIndex),
+          ...comments.slice(commentIndex + 1),
+        ];
 
-    this.#commentsModel.deleteComment(UpdateType.MAJOR, id);
-    this.#filmsModel.updateFilm(UpdateType.MAJOR, this.#film);
+        this.#commentsModel.deleteComment(UpdateType.MAJOR, id);
+        this.#filmsModel.updateFilm(UpdateType.MAJOR, this.#film);
+      })
+      .finally(()=>{
+        this.#filmPopupComponent.hideLoader();
+      });
   };
 
   updateControls = () => {

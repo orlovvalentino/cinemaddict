@@ -27,9 +27,13 @@ export default class CommentsModel extends Observable {
     this.#comments = newComments;
   }
 
-  deleteComment = (updateType, id) => {
+  updateComments = (updateType,comments)=>{
+    this.#comments = comments;
+    this._notify(updateType, comments);
+  };
 
-    const index = this.comments.findIndex((comment) => comment.id === Number(id));
+  deleteComment = (updateType, id) => {
+    const index = this.comments.findIndex((comment) => comment.id === id);
 
     if(index === -1){
       throw new Error('Can\'t delete unexciting comment');
