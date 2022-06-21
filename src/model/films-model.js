@@ -28,6 +28,18 @@ export default class FilmsModel extends Observable {
     this.#films = newFilms;
   }
 
+  get topRatedFilms() {
+    if (this.#films.every((film, i, arr) => film.filmInfo.totalRating === arr[0].filmInfo.totalRating)) {
+      if (this.#films[0].filmInfo.totalRating === 0) {
+        return [];
+      }
+      return this.#films.sort(() => Math.random() - Math.random()).slice(0, 2);
+    }
+    return this.#films.sort(this.#sortFilmsByRating).slice(0, 2);
+  }
+
+  #sortFilmsByRating = (a,b) => b.filmInfo.totalRating - a.filmInfo.totalRating;
+
   updateFilm = async (updateType, update) => {
     const index = this.#films.findIndex((film) => film.id === update.id);
 

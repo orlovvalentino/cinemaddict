@@ -153,7 +153,10 @@ export default class ContentPresenter {
   };
 
   #renderTopRelatedFilms = () => {
-    this.#relatedFilms = [...this.#filmsModel.films].slice(0, 2);
+    this.#relatedFilms = this.#filmsModel.topRatedFilms;
+    if(this.#relatedFilms.length === 0){
+      return false;
+    }
     this.#renderAdditionalFilms(
       this.#topRatedFilmsList,
       this.#topRatedFilmsListContainer,
