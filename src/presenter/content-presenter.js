@@ -147,13 +147,17 @@ export default class ContentPresenter {
   #renderAdditionalFilms = (additionalView, additionalViewContainer, films, presenters) => {
     render(additionalView, this.#contentComponent.element);
     render(additionalViewContainer, additionalView.element);
+    additionalViewContainer.element.innerHTML = '';
     for (const film of films) {
       this.#renderFilm(film, additionalViewContainer.element, presenters);
     }
   };
 
   #renderTopRelatedFilms = () => {
-    this.#relatedFilms = [...this.#filmsModel.films].slice(0, 2);
+    this.#relatedFilms = this.#filmsModel.topRatedFilms;
+    if(this.#relatedFilms.length === 0){
+      return false;
+    }
     this.#renderAdditionalFilms(
       this.#topRatedFilmsList,
       this.#topRatedFilmsListContainer,
@@ -163,7 +167,10 @@ export default class ContentPresenter {
   };
 
   #renderMostCommentedFilms = () => {
-    this.#commentedFilms = [...this.#filmsModel.films].slice(0, 2);
+    this.#commentedFilms = this.#filmsModel.topCommentedFilms;
+    if (this.#commentedFilms.length === 0) {
+      return false;
+    }
     this.#renderAdditionalFilms(
       this.#mostCommentedFilmsList,
       this.#mostCommentedFilmsListContainer,
