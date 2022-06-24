@@ -1,7 +1,7 @@
 import ProfileView from './view/profile-view.js';
 import FilmsCountView from './view/films-count-view.js';
 
-import { render } from './render.js';
+import { render } from './framework/render.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import ContentPresenter from './presenter/content-presenter';
 import FilmsModel from './model/films-model.js';
