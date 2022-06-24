@@ -10,7 +10,8 @@ const filmPopupTemplate = (film) => {
       totalRating, director, writers, actors, genre, description, release
     } = film.filmInfo,
     duration = getFormattedDuration(film.filmInfo.runtime),
-    releaseDate = getFormattedReleaseDate(release.date);
+    releaseDate = getFormattedReleaseDate(release.date),
+  getGenresLabel = ()=> genre.length>1 ? 'Genres' : 'Genre';
 
   return (`
     <section class="film-details">
@@ -63,7 +64,7 @@ const filmPopupTemplate = (film) => {
                   <td class="film-details__cell">${release.releaseCountry}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Genres</td>
+                  <td class="film-details__term">${getGenresLabel()}</td>
                   <td class="film-details__cell">
                     ${genre.map((it) => `<span class="film-details__genre">${it}</span>`).join('')}
                 </tr>
