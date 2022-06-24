@@ -61,7 +61,7 @@ export default class FilmPopupPresenter {
 
     this.#filmPopupComponent.setClickHandler(this.#closePopup);
     this.#filmPopupComponent.setSubmitHandler(this.#formReviewSubmit);
-    document.body.classList.toggle('hide-overflow');
+    document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this.#onEscKeyDown);
     this.#addBlockReview();
     this.#addControls();
@@ -84,7 +84,7 @@ export default class FilmPopupPresenter {
     this.#filmPopupComponent.removeClickHandler();
     this.#filmPopupComponent.removeSubmitHandler();
     remove(this.#filmPopupComponent);
-    document.body.classList.toggle('hide-overflow');
+    document.body.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this.#onEscKeyDown);
     this.setPopupCurrentFilmId(null);
   };
