@@ -1,4 +1,4 @@
-import {render,replace,remove} from '../framework/render.js';
+import {render, replace, remove, RenderPosition} from '../framework/render.js';
 import FilterView from '../view/filter-view.js';
 import {UpdateType} from '../const';
 
@@ -23,7 +23,7 @@ export default class FilterPresenter {
     this.#filterView = new FilterView(this.#filterModel.currentFilter, this.#filterModel.filters);
 
     if (prevFilterView === null) {
-      render(this.#filterView, this.#contentContainer);
+      render(this.#filterView, this.#contentContainer,RenderPosition.AFTERBEGIN);
       this.#setHandlersOnFilters();
       return;
     }

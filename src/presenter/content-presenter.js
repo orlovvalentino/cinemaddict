@@ -1,4 +1,3 @@
-import ContentView from '../view/content-view.js';
 import FilmsListView from '../view/films-list-view';
 import FilmsListContainerView from '../view/films-list-container-view';
 import FilmsListExtraView from '../view/films-list-extra-view';
@@ -16,14 +15,12 @@ import FilmPopupPresenter from './popup-presenter';
 const FILMS_COUNT_PER_STEP = 5;
 
 export default class ContentPresenter {
-  #contentComponent = new ContentView();
-
   #currentSort = SortType.DEFAULT;
 
   #sorterView = null;
   #mainFilmsList = null;
   #mainFilmsListContainer = new FilmsListContainerView();
-  #filmsListEmpty = new FilmsListEmptyView();
+  #filmsListEmpty = null;
   #loadingView = new LoadingView();
 
   #topRatedFilmsList = new FilmsListExtraView('Top rated');
@@ -82,8 +79,6 @@ export default class ContentPresenter {
   }
 
   init = () => {
-    render(this.#contentComponent, this.#contentContainer);
-
     this.#filmsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelFilterEvent);
     this.#popupPresenter = new FilmPopupPresenter(this.#popupContainer,this.#commentsModel,this.#filmsModel);
@@ -105,13 +100,12 @@ export default class ContentPresenter {
       this.#sorterView = new SorterView(this.#currentSort);
       this.#sorterView.setClickHandler(this.#sortFilms);
       if(prevSorterView === null){
-        render(this.#sorterView, this.#contentComponent.element, RenderPosition.BEFOREBEGIN);
+        render(this.#sorterView, this.#contentContainer.querySelector('.films'), RenderPosition.BEFOREBEGIN);
       }else{
         replace(this.#sorterView, prevSorterView);
         remove(prevSorterView);
       }
-
-      render(this.#mainFilmsList, this.#contentComponent.element, RenderPosition.AFTERBEGIN);
+      render(this.#mainFilmsList, this.#contentContainer.querySelector('.films'), RenderPosition.AFTERBEGIN);
 
       render(this.#mainFilmsListContainer, this.#mainFilmsList.element);
       this.#renderMainFilmsList();
@@ -121,13 +115,22 @@ export default class ContentPresenter {
         this.#showMoreButtonPresenter = null;
       }
       this.#showMoreButton(this.mainFilms.length > this.#renderedFilmsCount);
+      if(this.#filmsListEmpty){
+        remove(this.#filmsListEmpty);
+      }
     } else {
-      render(this.#filmsListEmpty, this.#contentComponent.element);
+      remove(prevSorterView);
+      if(this.#showMoreButtonPresenter){
+        this.#showMoreButtonPresenter.destroy();
+        this.#showMoreButtonPresenter = null;
+      }
+      this.#filmsListEmpty = new FilmsListEmptyView();
+      render(this.#filmsListEmpty, this.#contentContainer.querySelector('.films'), RenderPosition.AFTERBEGIN);
     }
   };
 
   #renderLoading = () => {
-    render(this.#loadingView, this.#contentComponent.element, RenderPosition.AFTERBEGIN);
+    render(this.#loadingView, this.#contentContainer.querySelector('.films'), RenderPosition.AFTERBEGIN);
   };
 
   #handleModelEvent = () => {
@@ -148,7 +151,7 @@ export default class ContentPresenter {
   };
 
   #renderAdditionalFilms = (additionalView, additionalViewContainer, films, presenters) => {
-    render(additionalView, this.#contentComponent.element);
+    render(additionalView, this.#contentContainer.querySelector('.films'));
     render(additionalViewContainer, additionalView.element);
     additionalViewContainer.element.innerHTML = '';
     for (const film of films) {
@@ -278,6 +281,9 @@ export default class ContentPresenter {
     );
     this.#FilmsPresenter.mainFilmsPresenter.clear();
     this.#mainFilmsListContainer.element.innerHTML = '';
+    if(this.#mainFilmsList){
+      remove(this.#mainFilmsList);
+    }
   };
 
   #renderMainFilmsList = () => {
