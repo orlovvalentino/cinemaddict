@@ -100,7 +100,7 @@ export default class FilmsModel extends Observable {
 
     delete adaptedFilm['film_info'];
     delete adaptedFilm['user_details'];
-    delete adaptedFilm['filmInfo']['release_country'];
+    delete adaptedFilm['filmInfo']['release']['release_country'];
     delete adaptedFilm['filmInfo']['alternative_title'];
     delete adaptedFilm['filmInfo']['age_rating'];
     delete adaptedFilm['filmInfo']['total_rating'];

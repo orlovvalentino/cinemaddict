@@ -160,15 +160,14 @@ export default class FilmPopupPresenter {
     const commentIndex = this.#film.comments.findIndex((item) => item === Number(id));
     this.#filmPopupComponent.showLoader();
     this.#sendComment.deleteComment(id)
-      .then(()=>{
+      .then((resp)=>{
         const comments = [...this.#film.comments];
         this.#film.comments = [
           ...comments.slice(0, commentIndex),
           ...comments.slice(commentIndex + 1),
         ];
-
         this.#commentsModel.deleteComment(UpdateType.MAJOR, id);
-        this.#filmsModel.updateFilm(UpdateType.MAJOR, this.#film);
+        this.#filmsModel.updateFilm(UpdateType.MAJOR, resp);
       })
       .finally(()=>{
         this.#filmPopupComponent.hideLoader();
