@@ -20,7 +20,7 @@ export default class FilterPresenter {
   init = () => {
     const prevFilterView = this.#filterView;
 
-    this.#filterView = new FilterView(this.#filterModel.currentFilter, this.#watched, this.#watchlist, this.#favorites);
+    this.#filterView = new FilterView(this.#filterModel.currentFilter, this.#filterModel.filters);
 
     if (prevFilterView === null) {
       render(this.#filterView, this.#contentContainer);
@@ -32,10 +32,6 @@ export default class FilterPresenter {
     remove(prevFilterView);
     this.#setHandlersOnFilters();
   };
-
-  #watched = () => this.#filmsModel.films.filter((item) => item.userDetails.alreadyWatched).length;
-  #watchlist = () => this.#filmsModel.films.filter((item) => item.userDetails.watchlist).length;
-  #favorites = () => this.#filmsModel.films.filter((item) => item.userDetails.favorite).length;
 
   #handleModelEvent = () => {
     this.init();

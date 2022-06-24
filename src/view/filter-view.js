@@ -1,7 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {FilterType} from '../const';
 
-const createMenuTemplate = ( currentFilter,watched,watchlist,favorites) => {
+const createMenuTemplate = ( currentFilter, filters) => {
+  const {watched, watchlist, favorites} = filters;
   const setClassActive = (filter) => currentFilter === filter ? 'main-navigation__item--active' : '';
   return (`<nav class="main-navigation">
     <a href="#all" class="main-navigation__item ${setClassActive(FilterType.ALL)}" data-filter="${FilterType.ALL}">All movies</a>
@@ -12,16 +13,14 @@ const createMenuTemplate = ( currentFilter,watched,watchlist,favorites) => {
 };
 
 export default class MenuView extends AbstractView {
-  constructor(currentFilter,watched, watchlist, favorites) {
+  constructor(currentFilter,filters) {
     super();
     this.currentFilter = currentFilter;
-    this.watched = watched;
-    this.watchlist = watchlist;
-    this.favorites = favorites;
+    this.filters = filters;
   }
 
   get template() {
-    return createMenuTemplate(this.currentFilter, this.watched, this.watchlist, this.favorites);
+    return createMenuTemplate(this.currentFilter,this.filters);
   }
 
   setAllClickHandler = (callback) => {

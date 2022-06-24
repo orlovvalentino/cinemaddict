@@ -10,11 +10,11 @@ export default class FilterModel extends Observable {
 
   constructor(filmsModel) {
     super();
-    this.#films = filmsModel.films;
+    this.#films = filmsModel;
     this.#filter = {
-      watched: () => this.#films.filter((item) => item.userDetails.alreadyWatched).length,
-      watchlist: () => this.#films.filter((item) => item.userDetails.watchlist).length,
-      favorites: () => this.#films.filter((item) => item.userDetails.favorite).length,
+      watched: () => this.#films.films.filter((item) => item.userDetails.alreadyWatched).length,
+      watchlist: () => this.#films.films.filter((item) => item.userDetails.watchlist).length,
+      favorites: () => this.#films.films.filter((item) => item.userDetails.favorite).length,
     };
   }
 
@@ -28,13 +28,13 @@ export default class FilterModel extends Observable {
 
   get watchedRank() {
     switch (true) {
-      case this.#filter.watched >= 1 &&
-      this.#filter.watched <= 10:
+      case this.#filter.watched() >= 1 &&
+      this.#filter.watched() <= 10:
         return 'novice';
-      case this.#filter.watched >= 11 &&
-      this.#filter.watched <= 20:
+      case this.#filter.watched() >= 11 &&
+      this.#filter.watched() <= 20:
         return 'fun';
-      case this.#filter.watched >= 21:
+      case this.#filter.watched() >= 21:
         return 'movie buff';
       default:
         return null;
