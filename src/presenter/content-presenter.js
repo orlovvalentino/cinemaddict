@@ -296,6 +296,6 @@ export default class ContentPresenter {
     }
   };
 
-  #sortFilmsByDate = (a,b) => new Date(a.filmInfo.release.date).getTime() - new Date(b.filmInfo.release.date).getTime();
-  #sortFilmsByRating = (a,b) => a.filmInfo.totalRating - b.filmInfo.totalRating;
+  #sortFilmsByDate = (a,b) =>  new Date(b.filmInfo.release.date).getTime() - new Date(a.filmInfo.release.date).getTime();
+  #sortFilmsByRating = (a,b) => b.filmInfo.totalRating - a.filmInfo.totalRating;
 }
