@@ -1,9 +1,10 @@
 import {getFormattedDuration,getFormattedReleaseDate} from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
-const createFilmTemplate = (film) => {
+const createFilmTemplate = (film,getShortDescription) => {
   const releaseDate = getFormattedReleaseDate(film.filmInfo.release.date),
-    duration = getFormattedDuration(film.filmInfo.runtime);
+    duration = getFormattedDuration(film.filmInfo.runtime),
+    description = getShortDescription();
 
   return (`
     <article class="film-card">
@@ -16,7 +17,7 @@ const createFilmTemplate = (film) => {
           <span class="film-card__genre">${film.filmInfo.genre[0]}</span>
         </p>
         <img src="${film.filmInfo.poster}" alt="${film.filmInfo.title}" class="film-card__poster">
-        <p class="film-card__description">${film.filmInfo.description}</p>
+        <p class="film-card__description">${description}</p>
         <span class="film-card__comments">${film.comments.length} comments</span>
       </a>
     </article>
@@ -32,12 +33,19 @@ export default class FilmView extends AbstractView {
   }
 
   get template() {
-    return createFilmTemplate(this.#film);
+    return createFilmTemplate(this.#film, this.#getShortDescription);
   }
 
   setLinkClickHandler = (callback) => {
     this._callback.linkClick = callback;
     this.element.querySelector('.film-card__link').addEventListener('click', this.#linkClickHandler);
+  };
+
+  #getShortDescription = ()=>{
+    if(this.#film.filmInfo.description.length <= 140){
+      return this.#film.filmInfo.description;
+    }
+    return `${this.#film.filmInfo.description.substring(0,139)}&#8230;`;
   };
 
   #linkClickHandler = (evt) => {
