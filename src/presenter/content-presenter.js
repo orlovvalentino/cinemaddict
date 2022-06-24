@@ -266,6 +266,7 @@ export default class ContentPresenter {
   };
 
   #sortFilms = (sort) => {
+    this.#renderedFilmsCount = FILMS_COUNT_PER_STEP;
     if (sort === this.#currentSort) {
       return true;
     }
