@@ -103,6 +103,9 @@ export default class FilmPopupPresenter {
         this.#commentsModel.updateComments(UpdateType.MAJOR, resp.comments);
         this.#filmsModel.updateCommentFilm(UpdateType.MAJOR, resp.movie);
       })
+      .catch(()=>{
+        this.#commentFormView.shake();
+      })
       .finally(()=>{
         this.#filmPopupComponent.hideLoader();
       });
