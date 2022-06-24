@@ -2,7 +2,7 @@ import AbstractView from '../../framework/view/abstract-view.js';
 
 const filmPopupControlsTemplate = (userDetails) => {
   const watchlist = userDetails.watchlist,
-    alreadyWatched =userDetails.alreadyWatched,
+    alreadyWatched = userDetails.alreadyWatched,
     favorite = userDetails.favorite;
   return (`<div class="film-details__controls">
       <button type="button" class="film-details__control-button film-details__control-button--watchlist ${watchlist ? 'film-details__control-button--active' : ''}" id="watchlist" name="watchlist">Add to watchlist</button>

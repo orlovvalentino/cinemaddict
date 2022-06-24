@@ -11,7 +11,7 @@ const filmPopupTemplate = (film) => {
     } = film.filmInfo,
     duration = getFormattedDuration(film.filmInfo.runtime),
     releaseDate = getFormattedReleaseDate(release.date),
-  getGenresLabel = ()=> genre.length>1 ? 'Genres' : 'Genre';
+    getGenresLabel = () => genre.length > 1 ? 'Genres' : 'Genre';
 
   return (`
     <section class="film-details">

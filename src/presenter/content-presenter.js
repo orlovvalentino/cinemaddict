@@ -234,9 +234,6 @@ export default class ContentPresenter {
         presenter.get(film.id).updateControls(film);
       }
     }
-    if (this.popupCurrentFilmId) {
-      this.#popupPresenter.updateControls();
-    }
   };
 
   #openPopup = (film) => {

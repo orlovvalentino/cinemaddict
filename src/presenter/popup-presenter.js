@@ -68,21 +68,23 @@ export default class FilmPopupPresenter {
     this.#setHandlersOnControls();
   };
 
-  updateControls = () => {
-    const filmPopupControlsViewNew = new FilmPopupControlsView(this.#film);
+  #handleModelEvent = () => {
+    this.#cleanBlockReview();
+    this.#addBlockReview();
+    this.#updateControls();
+  };
+
+  #updateControls = () => {
+    const filmPopupControlsViewNew = new FilmPopupControlsView(this.#filmsModel.films.find((i)=> i.id ===this.#film.id));
     replace(filmPopupControlsViewNew, this.#filmPopupControlsView);
     this.#filmPopupControlsView = filmPopupControlsViewNew;
     this.#setHandlersOnControls();
   };
 
-  #handleModelEvent = () => {
-    this.#cleanBlockReview();
-    this.#addBlockReview();
-  };
-
   #closePopup = () => {
     this.#filmPopupComponent.removeClickHandler();
     this.#filmPopupComponent.removeSubmitHandler();
+    remove(this.#filmPopupControlsView);
     remove(this.#filmPopupComponent);
     document.body.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this.#onEscKeyDown);
@@ -139,7 +141,6 @@ export default class FilmPopupPresenter {
 
   #updateControlsData = (film, key) => {
     this.#updateUserDetails(film, key);
-    this.updateControls();
   };
 
   #addBlockReview = () => {
