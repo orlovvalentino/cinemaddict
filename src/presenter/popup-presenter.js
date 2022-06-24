@@ -1,3 +1,4 @@
+import he from 'he';
 import FilmPopupView from '../view/popup/film-popup-view';
 import {remove, render, replace} from '../framework/render';
 import CommentView from '../view/popup/comment-view';
@@ -92,7 +93,7 @@ export default class FilmPopupPresenter {
     const data = {};
     const formData = new FormData(document.querySelector('.film-details__inner'));
     formData.forEach((value, key) => {
-      data[key] = value;
+      data[key] = he.encode(value);
     });
     this.#filmPopupComponent.showLoader();
     this.#sendComment.addComment(data, this.#film.id)
