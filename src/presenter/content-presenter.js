@@ -21,7 +21,6 @@ export default class ContentPresenter {
   #currentSort = SortType.DEFAULT;
 
   #sorterView = null;
-  // #mainFilmsList = new FilmsListView();
   #mainFilmsList = null;
   #mainFilmsListContainer = new FilmsListContainerView();
   #filmsListEmpty = new FilmsListEmptyView();
@@ -74,8 +73,12 @@ export default class ContentPresenter {
     return filteredFilms;
   }
 
-  set mainFilms(films) {
-    this.#filmsModel.films = [...films];
+  get popupCurrentFilmId() {
+    return this.#popupCurrentFilmId;
+  }
+
+  set popupCurrentFilmId(newId) {
+    this.#popupCurrentFilmId = newId;
   }
 
   init = () => {
@@ -244,14 +247,6 @@ export default class ContentPresenter {
       this._setPopupCurrentFilmId
     );
   };
-
-  get popupCurrentFilmId() {
-    return this.#popupCurrentFilmId;
-  }
-
-  set popupCurrentFilmId(newId) {
-    this.#popupCurrentFilmId = newId;
-  }
 
   _setPopupCurrentFilmId = (newId) => {
     this.popupCurrentFilmId = newId;

@@ -14,6 +14,10 @@ export default class CommentsModel extends Observable {
     return this.#comments;
   }
 
+  set comments(newComments) {
+    this.#comments = newComments;
+  }
+
   init = async (id) => {
     try {
       this.#comments = await this.#filmsApiService.getComments(id);
@@ -22,10 +26,6 @@ export default class CommentsModel extends Observable {
     }
     this._notify(UpdateType.INIT);
   };
-
-  set comments(newComments) {
-    this.#comments = newComments;
-  }
 
   updateComments = (updateType,comments)=>{
     this.#comments = comments;

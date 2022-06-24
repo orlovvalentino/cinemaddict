@@ -17,10 +17,6 @@ export default class FilterPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  #watched = () => this.#filmsModel.films.filter((item) => item.userDetails.alreadyWatched).length;
-  #watchlist = () => this.#filmsModel.films.filter((item) => item.userDetails.watchlist).length;
-  #favorites = () => this.#filmsModel.films.filter((item) => item.userDetails.favorite).length;
-
   init = () => {
     const prevFilterView = this.#filterView;
 
@@ -36,6 +32,10 @@ export default class FilterPresenter {
     remove(prevFilterView);
     this.#setHandlersOnFilters();
   };
+
+  #watched = () => this.#filmsModel.films.filter((item) => item.userDetails.alreadyWatched).length;
+  #watchlist = () => this.#filmsModel.films.filter((item) => item.userDetails.watchlist).length;
+  #favorites = () => this.#filmsModel.films.filter((item) => item.userDetails.favorite).length;
 
   #handleModelEvent = () => {
     this.init();

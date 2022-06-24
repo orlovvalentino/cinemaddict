@@ -119,10 +119,6 @@ export default class FilmPopupView extends AbstractView {
     });
   };
 
-  #formSubmit = (formData)=>{
-    this._callback.submit(formData);
-  };
-
   removeSubmitHandler = ()=>{
     delete this._callback.submit;
     this.element.querySelector('.film-details__inner').removeEventListener('keydown', this.#formSubmit);
@@ -133,16 +129,20 @@ export default class FilmPopupView extends AbstractView {
     this.element.removeEventListener('click', this.#clickHandler);
   };
 
-  #clickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.click();
-  };
-
   showLoader = () => {
     this.element.querySelector('.film-details__bottom-container').classList.add('loading');
   };
 
   hideLoader = () => {
     this.element.querySelector('.film-details__bottom-container').classList.remove('loading');
+  };
+
+  #formSubmit = (formData)=>{
+    this._callback.submit(formData);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
   };
 }

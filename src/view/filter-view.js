@@ -29,19 +29,9 @@ export default class MenuView extends AbstractView {
     this.element.querySelector(`[data-filter=${FilterType.ALL}]`).addEventListener('click', this.#allClickHandler);
   };
 
-  #allClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.allClick(FilterType.ALL);
-  };
-
   setWatchlistClickHandler = (callback) => {
     this._callback.watchlistClick = callback;
     this.element.querySelector(`[data-filter=${FilterType.WATCHLIST}]`).addEventListener('click', this.#watchlistClickHandler);
-  };
-
-  #watchlistClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.watchlistClick(FilterType.WATCHLIST);
   };
 
   setWatchedClickHandler = (callback) => {
@@ -49,14 +39,24 @@ export default class MenuView extends AbstractView {
     this.element.querySelector(`[data-filter=${FilterType.WATCHED}]`).addEventListener('click', this.#watchedClickHandler);
   };
 
-  #watchedClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.watchlistClick(FilterType.WATCHED);
-  };
-
   setFavoriteClickHandler = (callback) => {
     this._callback.FavoriteClick = callback;
     this.element.querySelector(`[data-filter=${FilterType.FAVORITE}]`).addEventListener('click', this.#favoriteClickHandler);
+  };
+
+  #allClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.allClick(FilterType.ALL);
+  };
+
+  #watchlistClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchlistClick(FilterType.WATCHLIST);
+  };
+
+  #watchedClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchlistClick(FilterType.WATCHED);
   };
 
   #favoriteClickHandler = (evt) => {

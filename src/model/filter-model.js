@@ -22,11 +22,6 @@ export default class FilterModel extends Observable {
     return this.#currentFilter;
   }
 
-  setCurrentFilter = (updateType, filter) => {
-    this.#currentFilter = filter;
-    this._notify(updateType, filter);
-  };
-
   get filters() {
     return this.#filter;
   }
@@ -45,4 +40,9 @@ export default class FilterModel extends Observable {
         return null;
     }
   }
+
+  setCurrentFilter = (updateType, filter) => {
+    this.#currentFilter = filter;
+    this._notify(updateType, filter);
+  };
 }

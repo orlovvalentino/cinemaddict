@@ -34,12 +34,6 @@ export default class FilmPresenter {
     this.#filmComponent.setLinkClickHandler(callback);
   };
 
-  #setHandlersOnControls = () => {
-    this.#filmControlsComponent.setWatchlistClickHandler(this.updateUserDetails);
-    this.#filmControlsComponent.setWatchedClickHandler(this.updateUserDetails);
-    this.#filmControlsComponent.setFavoriteClickHandler(this.updateUserDetails);
-  };
-
   updateControls = (film) => {
     const filmControlsComponentNew = new FilmControlsView(film);
     replace(filmControlsComponentNew, this.#filmControlsComponent);
@@ -49,5 +43,11 @@ export default class FilmPresenter {
 
   destroy = () => {
     remove(this.#filmComponent);
+  };
+
+  #setHandlersOnControls = () => {
+    this.#filmControlsComponent.setWatchlistClickHandler(this.updateUserDetails);
+    this.#filmControlsComponent.setWatchedClickHandler(this.updateUserDetails);
+    this.#filmControlsComponent.setFavoriteClickHandler(this.updateUserDetails);
   };
 }

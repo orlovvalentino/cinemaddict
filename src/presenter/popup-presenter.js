@@ -12,62 +12,24 @@ const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
 export default class FilmPopupPresenter {
   #sendComment = new FilmsApiService(END_POINT, AUTHORIZATION);
   #film = null;
-
   #container = null;
-
   #filmPopupComponent = null;
-
   #filmsModel = null;
   #commentsModel = null;
-  #comments = null;
-  #commentsView = new Map();
   #filmPopupControlsView = null;
   #commentFormView = null;
   #updateUserDetails = () => true;
-
 
   constructor(container,commentsModel,filmsModel) {
     this.#container = container;
     this.#commentsModel = commentsModel;
     this.#filmsModel = filmsModel;
     this._state = {};
-
   }
 
   get comments() {
     return this.#commentsModel.comments;
   }
-
-  #handleModelEvent = () => {
-    this.#cleanBlockReview();
-    this.#addBlockReview();
-  };
-
-  #closePopup = () => {
-    this.#filmPopupComponent.removeClickHandler();
-    this.#filmPopupComponent.removeSubmitHandler();
-    remove(this.#filmPopupComponent);
-    document.body.classList.toggle('hide-overflow');
-    document.removeEventListener('keydown', this.#onEscKeyDown);
-    this.setPopupCurrentFilmId(null);
-  };
-
-  #formReviewSubmit = () => {
-    const data = {};
-    const formData = new FormData(document.querySelector('.film-details__inner'));
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
-    this.#filmPopupComponent.showLoader();
-    this.#sendComment.addComment(data, this.#film.id)
-      .then((resp)=>{
-        this.#commentsModel.updateComments(UpdateType.MAJOR, resp.comments);
-        this.#filmsModel.updateCommentFilm(UpdateType.MAJOR, resp.movie);
-      })
-      .finally(()=>{
-        this.#filmPopupComponent.hideLoader();
-      });
-  };
 
   open = (
     film,
@@ -103,6 +65,44 @@ export default class FilmPopupPresenter {
     this.#addBlockReview();
     this.#addControls();
     this.#setHandlersOnControls();
+  };
+
+  updateControls = () => {
+    const filmPopupControlsViewNew = new FilmPopupControlsView(this.#film);
+    replace(filmPopupControlsViewNew, this.#filmPopupControlsView);
+    this.#filmPopupControlsView = filmPopupControlsViewNew;
+    this.#setHandlersOnControls();
+  };
+
+  #handleModelEvent = () => {
+    this.#cleanBlockReview();
+    this.#addBlockReview();
+  };
+
+  #closePopup = () => {
+    this.#filmPopupComponent.removeClickHandler();
+    this.#filmPopupComponent.removeSubmitHandler();
+    remove(this.#filmPopupComponent);
+    document.body.classList.toggle('hide-overflow');
+    document.removeEventListener('keydown', this.#onEscKeyDown);
+    this.setPopupCurrentFilmId(null);
+  };
+
+  #formReviewSubmit = () => {
+    const data = {};
+    const formData = new FormData(document.querySelector('.film-details__inner'));
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+    this.#filmPopupComponent.showLoader();
+    this.#sendComment.addComment(data, this.#film.id)
+      .then((resp)=>{
+        this.#commentsModel.updateComments(UpdateType.MAJOR, resp.comments);
+        this.#filmsModel.updateCommentFilm(UpdateType.MAJOR, resp.movie);
+      })
+      .finally(()=>{
+        this.#filmPopupComponent.hideLoader();
+      });
   };
 
   #onEscKeyDown = (evt) => {
@@ -172,12 +172,5 @@ export default class FilmPopupPresenter {
       .finally(()=>{
         this.#filmPopupComponent.hideLoader();
       });
-  };
-
-  updateControls = () => {
-    const filmPopupControlsViewNew = new FilmPopupControlsView(this.#film);
-    replace(filmPopupControlsViewNew, this.#filmPopupControlsView);
-    this.#filmPopupControlsView = filmPopupControlsViewNew;
-    this.#setHandlersOnControls();
   };
 }

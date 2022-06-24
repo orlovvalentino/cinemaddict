@@ -63,15 +63,15 @@ export default class CommentFormView extends AbstractStatefulView {
     });
   };
 
+  setInputChangeHandler = ()=>{
+    this.element.querySelector('.film-details__comment-input').addEventListener('keyup', this.#inputKeyPress);
+  };
+
   #emojiChangeHandler = (evt) => {
     this._state.emoji = evt.target.value;
     this.updateElement({
       emoji: evt.target.value,
     });
-  };
-
-  setInputChangeHandler = ()=>{
-    this.element.querySelector('.film-details__comment-input').addEventListener('keyup', this.#inputKeyPress);
   };
 
   #inputKeyPress = (evt) => {
