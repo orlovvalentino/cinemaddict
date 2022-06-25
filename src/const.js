@@ -17,4 +17,11 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
-export {SortType,FilterType,UpdateType};
+const EmptyList = {
+  all:'There are no movies in our database',
+  watchlist:'There are no movies to watch now',
+  watched:'There are no watched movies now',
+  favorite:'There are no favorite movies now'
+};
+
+export {SortType,FilterType,UpdateType,EmptyList};

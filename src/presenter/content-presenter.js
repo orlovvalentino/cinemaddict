@@ -115,17 +115,22 @@ export default class ContentPresenter {
         this.#showMoreButtonPresenter = null;
       }
       this.#showMoreButton(this.mainFilms.length > this.#renderedFilmsCount);
-      if(this.#filmsListEmpty){
-        remove(this.#filmsListEmpty);
-      }
+      this.#removeFilmListEmpty();
     } else {
       remove(prevSorterView);
+      this.#removeFilmListEmpty();
       if(this.#showMoreButtonPresenter){
         this.#showMoreButtonPresenter.destroy();
         this.#showMoreButtonPresenter = null;
       }
-      this.#filmsListEmpty = new FilmsListEmptyView();
+      this.#filmsListEmpty = new FilmsListEmptyView(this.#filterModel.currentFilter);
       render(this.#filmsListEmpty, this.#contentContainer.querySelector('.films'), RenderPosition.AFTERBEGIN);
+    }
+  };
+
+  #removeFilmListEmpty = ()=>{
+    if(this.#filmsListEmpty){
+      remove(this.#filmsListEmpty);
     }
   };
 
