@@ -67,7 +67,7 @@ export default class ContentPresenter {
       case SortType.RATING:
         return filteredFilms.sort(this.#sortFilmsByRating);
     }
-    return filteredFilms;
+    return filteredFilms.sort(this.#sortFilmsByDefault);
   }
 
   get popupCurrentFilmId() {
@@ -301,6 +301,7 @@ export default class ContentPresenter {
     }
   };
 
+  #sortFilmsByDefault = (a,b) =>  a.id - b.id;
   #sortFilmsByDate = (a,b) =>  new Date(b.filmInfo.release.date).getTime() - new Date(a.filmInfo.release.date).getTime();
   #sortFilmsByRating = (a,b) => b.filmInfo.totalRating - a.filmInfo.totalRating;
 }
